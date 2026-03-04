@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Modal, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Modal, ImageBackground, Image } from 'react-native';
 import "../global.css";
 import { useNavigation } from '@react-navigation/native';
 import BottomNav from '../components/bottomNav.jsx';
@@ -11,6 +11,16 @@ export default function Home({ navigation }) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const mountainImage = require("../../assets/mountain.png");
+    const architectureImage = require("../../assets/architecture.png")
+    const inovationImage = require("../../assets/inovation.png")
+
+    const images = [
+        { title: "Beautiful Mountain Landscape Photography Collection for Nature Enthusiasts", imageSource: mountainImage },
+        { title: "Modern Urban Architecture and City Skylines Development Projects Around the World", imageSource: architectureImage },
+        { title: "Advanced Technology Innovation and Digital Transformation Solutions for Business Growth", imageSource: inovationImage },
+    ];
 
     const handleLoginPress = () => {
         setShowLogin(true);
@@ -52,30 +62,20 @@ export default function Home({ navigation }) {
                 isLoggedIn={isLoggedIn}
             />
 
-            <ScrollView style={{ flex: 1 }}>
-                <ImageBackground
-                    source={{ uri: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+            <ScrollView style={{ flex: 1, height: '100%' }} contentContainerStyle={{ alignItems: 'center' , paddingBottom: 20}}>
+                <View
                     style={{ 
                         minHeight: 500,
+                        width: '100%',
                         paddingHorizontal: 30,
                         paddingVertical: 60,
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        backgroundColor: '#343635'
                     }}
-                    resizeMode="cover"
                 >
                     <View style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.4)'
-                    }} />
-
-                    <View style={{ 
-                        marginTop: -20,
-                        alignItems: 'center', 
+                        alignItems: 'center',
                         zIndex: 1,
                         paddingHorizontal: 20
                     }}>
@@ -108,14 +108,14 @@ export default function Home({ navigation }) {
                             textShadowOffset: { width: 0, height: 1 },
                             textShadowRadius: 2
                         }}>
-                            Transform your city with AI-powered waste monitoring. 
+                            Transform your city with AI-powered waste monitoring.
                             Reduce costs by 40% and create cleaner communities.
                         </Text>
 
-                        <View style={{ 
-                            flexDirection: 'row', 
-                            justifyContent: 'space-between', 
-                            width: '100%', 
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: '100%',
                             maxWidth: 300,
                             marginBottom: 40,
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -124,46 +124,46 @@ export default function Home({ navigation }) {
                             paddingHorizontal: 10
                         }}>
                             <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Text style={{ 
-                                    fontSize: 28, 
-                                    fontWeight: 'bold', 
+                                <Text style={{
+                                    fontSize: 28,
+                                    fontWeight: 'bold',
                                     color: '#4ade80',
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
                                 }}>500+</Text>
-                                <Text style={{ 
-                                    fontSize: 14, 
+                                <Text style={{
+                                    fontSize: 14,
                                     color: '#e2e8f0',
                                     textAlign: 'center'
                                 }}>Smart Bins</Text>
                             </View>
                             <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Text style={{ 
-                                    fontSize: 28, 
-                                    fontWeight: 'bold', 
+                                <Text style={{
+                                    fontSize: 28,
+                                    fontWeight: 'bold',
                                     color: '#4ade80',
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
                                 }}>40%</Text>
-                                <Text style={{ 
-                                    fontSize: 14, 
+                                <Text style={{
+                                    fontSize: 14,
                                     color: '#e2e8f0',
                                     textAlign: 'center'
                                 }}>Cost Reduction</Text>
                             </View>
                             <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Text style={{ 
-                                    fontSize: 28, 
-                                    fontWeight: 'bold', 
+                                <Text style={{
+                                    fontSize: 28,
+                                    fontWeight: 'bold',
                                     color: '#4ade80',
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
                                 }}>24/7</Text>
-                                <Text style={{ 
-                                    fontSize: 14, 
+                                <Text style={{
+                                    fontSize: 14,
                                     color: '#e2e8f0',
                                     textAlign: 'center'
                                 }}>Monitoring</Text>
@@ -206,7 +206,6 @@ export default function Home({ navigation }) {
                                     fontSize: 28,
                                     color: '#ffffff',
                                     fontWeight: 'bold',
-                                    marginBottom: 12,
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 2 },
                                     textShadowRadius: 4
@@ -224,7 +223,75 @@ export default function Home({ navigation }) {
                             </View>
                         )}
                     </View>
-                </ImageBackground>
+                </View>
+
+                <View style={{
+                    width: '100%',
+                    paddingHorizontal: 20,
+                    marginTop: -5,
+                    marginBottom: 50,
+                    backgroundColor: '#f3f3f3',
+                    paddingTop: 20,
+                }}>
+                    <Text style={{
+                        fontSize: 30,
+                        fontWeight: 'bold',
+                        marginBottom: 25,
+                        marginTop: 20,
+                        textAlign: 'center',
+                    }}>
+                        Latest updates
+                    </Text>
+
+                    {images.map((item, index) => (
+                        <TouchableOpacity key={index} style={{ alignItems: 'center' }}>
+                            <View style={{
+                                marginBottom: 20,
+                                alignItems: "center",
+                                backgroundColor: '#fff',
+                                borderRadius: 16,
+                                padding: 16,
+                                elevation: 4,
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.1,
+                                shadowRadius: 4,
+                                width: 350,
+                            }}>
+
+                                <View style={{
+                                    width: 300,
+                                    height: 150,
+                                    backgroundColor: '#e5e7eb',
+                                    borderRadius: 16,
+                                    overflow: 'hidden'
+                                }}>
+                                    <Image
+                                        source={item.imageSource}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        resizeMode='cover'
+                                    />
+                                </View>
+
+                                <View style={{
+                                    padding: 10,
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        color: '#1f2937'
+                                    }}>
+                                        {item.title}
+                                    </Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </ScrollView>
 
             <BottomNav navigation={navigation} />

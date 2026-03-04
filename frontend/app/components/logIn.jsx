@@ -130,9 +130,9 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
                     <Text style={{ 
                         fontSize: 18, 
                         color: '#9ca3af',
-                        marginRight: 16,
-                        width: 20
-                    }}>🔒</Text>
+                        marginRight: 4,
+                        width: 30
+                    }}>🔑</Text>
                     <View style={{ flex: 1 }}>
                         {(passwordFocused || password) && (
                             <Text style={{
