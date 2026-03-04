@@ -1,15 +1,23 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <TinyGPSPlus.h>
 
 #define TRIG 12
 #define ECHO 11
+
+#define RX 44
+#define TX 43
 
 #define RGB_BUILTIN 38
 
 #define RGB_PIN 14
 #define RGB_COUNT 1
 
+
 Adafruit_NeoPixel rgb(RGB_COUNT, RGB_PIN, NEO_GRB + NEO_KHZ800);
+
+HardwareSerial gpsSerial(0);
+TinyGPSPlus gps;
 
 float distance;
 float meter;
@@ -25,6 +33,8 @@ void setup()
 
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
+
+  gpsSerial.begin(9600);
 
   digitalWrite(TRIG, LOW);
   delay(1000);
@@ -76,7 +86,29 @@ void loop()
 
     lightIndication(distance);
   }
+
+  while (gpsSerial.available()) {
+    gps.encode(gpsSerial.read());
+  }
+
+  if (gps.location.isUpdated()) 
+  {
+    Serial.print("Latitude: ");
+    Serial.println(gps.location.lat(), 6);
+
+    Serial.print("Longitude: ");
+    Serial.println(gps.location.lng(), 6);
+
+    Serial.print("Satellites: ");
+    Serial.println(gps.satellites.value());
+
+    Serial.print("HDOP: ");
+    Serial.println(gps.hdop.value());
+
+    Serial.println("----------------------");
+  }
 }
+
 
 
 
