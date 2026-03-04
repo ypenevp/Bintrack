@@ -1,13 +1,304 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Modal, ImageBackground } from 'react-native';
 import "../global.css";
+import { useNavigation } from '@react-navigation/native';
+import BottomNav from '../components/bottomNav.jsx';
+import TopNav from '../components/topNav.jsx';
+import { useState } from 'react';
+import Login from '../components/logIn.jsx';
+import SignUp from '../components/signUp.jsx';
 
 export default function Home({ navigation }) {
+    const [showSignUp, setShowSignUp] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLoginPress = () => {
+        setShowLogin(true);
+        setShowSignUp(false);
+    };
+
+    const handleSignUpPress = () => {
+        setShowSignUp(true);
+        setShowLogin(false);
+    };
+
+    const handleSwitchToSignUp = () => {
+        setShowLogin(false);
+        setShowSignUp(true);
+    };
+
+    const handleSwitchToLogin = () => {
+        setShowSignUp(false);
+        setShowLogin(true);
+    };
+
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true);
+        setShowLogin(false);
+        setShowSignUp(false);
+    };
+
+    const closeModals = () => {
+        setShowLogin(false);
+        setShowSignUp(false);
+    };
+
     return (
-        <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' }}>
-            <Text className="text-red-500 font-bold italic">Open up App.js to start working on your app!</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-                <Text className="text-blue-500 font-bold">Go to Settings</Text>
-            </TouchableOpacity>
+        <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            <TopNav
+                navigation={navigation}
+                onLoginPress={handleLoginPress}
+                onSignUpPress={handleSignUpPress}
+                isLoggedIn={isLoggedIn}
+            />
+
+            <ScrollView style={{ flex: 1 }}>
+                <ImageBackground
+                    source={{ uri: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+                    style={{ 
+                        minHeight: 500,
+                        paddingHorizontal: 30,
+                        paddingVertical: 60,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                    resizeMode="cover"
+                >
+                    <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.4)'
+                    }} />
+
+                    <View style={{ 
+                        marginTop: -20,
+                        alignItems: 'center', 
+                        zIndex: 1,
+                        paddingHorizontal: 20
+                    }}>
+
+                        <Text style={{
+                            fontSize: 47,
+                            color: '#ffffff',
+                            fontWeight: '800',
+                            textAlign: 'center',
+                            marginBottom: 10,
+                            letterSpacing: -1,
+                            lineHeight: 52,
+                            textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                            textShadowOffset: { width: 0, height: 2 },
+                            textShadowRadius: 4
+                        }}>
+                            Bin
+                            <Text style={{ color: '#4ade80' }}>Track</Text>
+                        </Text>
+
+                        <Text style={{
+                            fontSize: 20,
+                            color: '#f1f5f9',
+                            textAlign: 'center',
+                            lineHeight: 30,
+                            marginBottom: 40,
+                            maxWidth: 380,
+                            fontWeight: '400',
+                            textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                            textShadowOffset: { width: 0, height: 1 },
+                            textShadowRadius: 2
+                        }}>
+                            Transform your city with AI-powered waste monitoring. 
+                            Reduce costs by 40% and create cleaner communities.
+                        </Text>
+
+                        <View style={{ 
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between', 
+                            width: '100%', 
+                            maxWidth: 300,
+                            marginBottom: 40,
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            borderRadius: 16,
+                            paddingVertical: 20,
+                            paddingHorizontal: 10
+                        }}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
+                                <Text style={{ 
+                                    fontSize: 28, 
+                                    fontWeight: 'bold', 
+                                    color: '#4ade80',
+                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                    textShadowOffset: { width: 0, height: 1 },
+                                    textShadowRadius: 2
+                                }}>500+</Text>
+                                <Text style={{ 
+                                    fontSize: 14, 
+                                    color: '#e2e8f0',
+                                    textAlign: 'center'
+                                }}>Smart Bins</Text>
+                            </View>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
+                                <Text style={{ 
+                                    fontSize: 28, 
+                                    fontWeight: 'bold', 
+                                    color: '#4ade80',
+                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                    textShadowOffset: { width: 0, height: 1 },
+                                    textShadowRadius: 2
+                                }}>40%</Text>
+                                <Text style={{ 
+                                    fontSize: 14, 
+                                    color: '#e2e8f0',
+                                    textAlign: 'center'
+                                }}>Cost Reduction</Text>
+                            </View>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
+                                <Text style={{ 
+                                    fontSize: 28, 
+                                    fontWeight: 'bold', 
+                                    color: '#4ade80',
+                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                    textShadowOffset: { width: 0, height: 1 },
+                                    textShadowRadius: 2
+                                }}>24/7</Text>
+                                <Text style={{ 
+                                    fontSize: 14, 
+                                    color: '#e2e8f0',
+                                    textAlign: 'center'
+                                }}>Monitoring</Text>
+                            </View>
+                        </View>
+
+                        {!isLoggedIn && (
+                            <View style={{ alignItems: 'center', width: '100%' }}>
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: '#15803d',
+                                        paddingVertical: 18,
+                                        paddingHorizontal: 40,
+                                        borderRadius: 30,
+                                        shadowColor: '#000',
+                                        shadowOpacity: 0.3,
+                                        shadowOffset: { width: 0, height: 6 },
+                                        shadowRadius: 16,
+                                        elevation: 12,
+                                        minWidth: 250
+                                    }}
+                                    onPress={handleSignUpPress}
+                                >
+                                    <Text style={{
+                                        color: '#ffffff',
+                                        fontSize: 18,
+                                        fontWeight: 'bold',
+                                        letterSpacing: 0.5,
+                                        textAlign: 'center'
+                                    }}>
+                                        Create an Account
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
+                        {isLoggedIn && (
+                            <View style={{ alignItems: 'center' }}>
+                                <Text style={{
+                                    fontSize: 28,
+                                    color: '#ffffff',
+                                    fontWeight: 'bold',
+                                    marginBottom: 12,
+                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                    textShadowOffset: { width: 0, height: 2 },
+                                    textShadowRadius: 4
+                                }}>
+                                    Welcome back! 🎉
+                                </Text>
+                                <Text style={{
+                                    fontSize: 18,
+                                    color: '#e2e8f0',
+                                    textAlign: 'center',
+                                    maxWidth: 300
+                                }}>
+                                    You're now ready to manage your smart waste bins efficiently
+                                </Text>
+                            </View>
+                        )}
+                    </View>
+                </ImageBackground>
+            </ScrollView>
+
+            <BottomNav navigation={navigation} />
+
+            {showLogin && (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+                        onPress={closeModals}
+                        activeOpacity={1}
+                    />
+                    <View style={{
+                        width: '90%',
+                        maxWidth: 400,
+                        backgroundColor: '#fff',
+                        borderRadius: 24,
+                        padding: 40,
+                        shadowColor: '#000',
+                        shadowOpacity: 0.3,
+                        shadowRadius: 20,
+                        elevation: 20,
+                    }}>
+                        <Login
+                            onSignUpPress={handleSwitchToSignUp}
+                            onLoginSuccess={handleLoginSuccess}
+                        />
+                    </View>
+                </View>
+            )}
+
+            {showSignUp && (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+                        onPress={closeModals}
+                        activeOpacity={1}
+                    />
+                    <View style={{
+                        width: '90%',
+                        maxWidth: 400,
+                        backgroundColor: '#fff',
+                        borderRadius: 24,
+                        padding: 40,
+                        shadowColor: '#000',
+                        shadowOpacity: 0.3,
+                        shadowRadius: 20,
+                        elevation: 20,
+                    }}>
+                        <SignUp
+                            onLoginPress={handleSwitchToLogin}
+                        />
+                    </View>
+                </View>
+            )}
         </View>
     );
 }
