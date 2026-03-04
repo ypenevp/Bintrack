@@ -34,7 +34,7 @@ void setup()
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
 
-  gpsSerial.begin(9600);
+  gpsSerial.begin(9600, SERIAL_8N1, RX, TX);
 
   digitalWrite(TRIG, LOW);
   delay(1000);
