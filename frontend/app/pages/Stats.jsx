@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import BottomNav from '../components/bottomNav.jsx';
 import TopNav from '../components/topNav.jsx';
 
-export default function Settings({ navigation }) {
+export default function Stats({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <TopNav navigation={navigation} />
             <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' }}>
-                <Text className="text-green-500 font-bold italic">This is the Settings page!</Text>
+                <Text className="text-green-500 font-bold italic">This is the Stats page!</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <Text className="text-blue-500 font-bold">Go to Home</Text>
                 </TouchableOpacity>
