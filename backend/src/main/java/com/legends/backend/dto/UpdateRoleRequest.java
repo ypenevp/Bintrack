@@ -6,9 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterRequest {
+public class UpdateRoleRequest {
     private String email;
-    private String username;
-    private String password;
-//    private ROLE role;
+    private ROLE role;
 }

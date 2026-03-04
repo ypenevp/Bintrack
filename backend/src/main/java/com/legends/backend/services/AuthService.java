@@ -35,11 +35,12 @@ public class AuthService {
     }
 
     public void register(RegisterRequest request) {
+
         var user = new User();
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(encoder.encode(request.getPassword()));
-        user.setRole(request.getRole()); // or Role.ADMIN / Role.WORKER as needed
+        user.setRole(ROLE.USER); // Винаги слагаме USER по подразбиране
         user.setEnabled(false);
 
         userRepo.save(user);
@@ -54,6 +55,7 @@ public class AuthService {
         codeRepo.save(verification);
         emailService.sendVerificationCode(user.getEmail(), code);
     }
+
 
     public void verifyEmail(String code) {
         var verification = codeRepo.findByCode(code)
