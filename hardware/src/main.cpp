@@ -5,8 +5,8 @@
 #define TRIG 12
 #define ECHO 11
 
-#define RX 44
-#define TX 43
+#define RX 18
+#define TX 17
 
 #define RGB_BUILTIN 38
 
@@ -16,7 +16,7 @@
 
 Adafruit_NeoPixel rgb(RGB_COUNT, RGB_PIN, NEO_GRB + NEO_KHZ800);
 
-HardwareSerial gpsSerial(0);
+HardwareSerial gpsSerial(1);
 TinyGPSPlus gps;
 
 float distance;
