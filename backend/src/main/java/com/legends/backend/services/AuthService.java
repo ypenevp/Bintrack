@@ -7,6 +7,7 @@ import com.legends.backend.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.legends.backend.entities.ROLE;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(encoder.encode(request.getPassword()));
+        user.setRole(request.getRole()); // or Role.ADMIN / Role.WORKER as needed
         user.setEnabled(false);
 
         userRepo.save(user);
@@ -80,7 +82,7 @@ public class AuthService {
             throw new RuntimeException("Email not verified");
         }
 
-        return new AuthResponse(jwtService.generateToken(user.getEmail()));
+        return new AuthResponse(jwtService.generateToken(user.getEmail(), String.valueOf(user.getRole())));
     }
 
     public UserResponse getUserData(String email) {
