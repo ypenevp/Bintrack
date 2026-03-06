@@ -1,7 +1,11 @@
 package com.legends.backend.controllers;
 
+import com.legends.backend.entities.Device;
 import com.legends.backend.entities.SensorData;
+import com.legends.backend.services.DeviceService;
 import com.legends.backend.services.SensorDataService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +15,11 @@ import java.util.List;
 @RequestMapping("/api/v1/sensorData")
 public class SensorDataController {
     private final SensorDataService sensorDataService;
+    private final DeviceService deviceService;
 
-    public SensorDataController(SensorDataService sensorDataService) {
+    public SensorDataController(SensorDataService sensorDataService, DeviceService deviceService) {
         this.sensorDataService = sensorDataService;
+        this.deviceService = deviceService;
     }
 
     @GetMapping("/get/{id}")
@@ -27,8 +33,16 @@ public class SensorDataController {
     }
 
     @PostMapping("/add")
-    public SensorData addSensorDataController(@RequestBody SensorData sensorData){
-        return this.sensorDataService.addSensorData(sensorData);
+    public ResponseEntity<?> addSensorDataController(@RequestBody SensorData sensorData){
+        Device device = deviceService.authenticateDevice(sensorData.getDeviceToken());
+
+        if(device == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        sensorData.setDeviceID(device.getId());
+        SensorData saved = sensorDataService.addSensorData(sensorData);
+        return ResponseEntity.ok(saved);
     }
 
     @PatchMapping("/update/{id}")
