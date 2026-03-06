@@ -6,10 +6,12 @@ import TopNav from '../components/topNav.jsx';
 import { useState } from 'react';
 import Login from '../components/logIn.jsx';
 import SignUp from '../components/signUp.jsx';
+import VerifyCode from '../components/verify.jsx';
 
 export default function Home({ navigation }) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
+    const [showVerify, setShowVerify] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const mountainImage = require("../../assets/mountain.png");
@@ -51,6 +53,16 @@ export default function Home({ navigation }) {
     const closeModals = () => {
         setShowLogin(false);
         setShowSignUp(false);
+    };
+
+    const handleShowVerify = () => {
+        setShowSignUp(false);
+        setShowVerify(true);
+    };
+
+    const handleVerifySuccess = () => {
+        setShowVerify(false);
+        setIsLoggedIn(true);
     };
 
     return (
@@ -362,8 +374,25 @@ export default function Home({ navigation }) {
                     }}>
                         <SignUp
                             onLoginPress={handleSwitchToLogin}
+                            onShowVerify={handleShowVerify}
                         />
                     </View>
+                </View>
+            )}
+
+            {showVerify && (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <VerifyCode onSuccess={handleVerifySuccess} />
                 </View>
             )}
         </View>
