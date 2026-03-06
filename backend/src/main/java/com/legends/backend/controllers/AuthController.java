@@ -5,6 +5,7 @@ import com.legends.backend.services.AuthService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -26,6 +27,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest request) {
+        System.out.println("=== LOGIN REQUEST RECEIVED ===");
+        System.out.println("Email: " + request.getEmail());
         return authService.login(request);
     }
 

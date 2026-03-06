@@ -86,7 +86,6 @@ export default function VerifyCode({ onSuccess }) {
                     }}
                     placeholder="Verification Code"
                     placeholderTextColor="#888"
-                    keyboardType="number-pad"
                     value={code}
                     onChangeText={setCode}
                 />
