@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { handleSignUp } from "../services/auth.js";
 
-export default function SignUp({ onLoginPress, onClose }) {
+export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ export default function SignUp({ onLoginPress, onClose }) {
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [repeatPasswordFocused, setRepeatPasswordFocused] = useState(false);
 
-    const onSignUpPress = () => {
+    const onSignUpPress = async () => {
         setError("");
         if (!email || !username || !password || !repeatPassword) {
             setError("Please fill in all fields.");
@@ -23,11 +24,19 @@ export default function SignUp({ onLoginPress, onClose }) {
             setError("Passwords do not match.");
             return;
         }
-        if (password.length < 6) {
-            setError("Password must be at least 6 characters long.");
-            return;
-        }
+
         setLoading(true);
+        const result = await handleSignUp(username, password, email);
+        if(result.ok) {
+            if(onShowVerify) {
+                onShowVerify();
+            } else {
+                onLoginPress();
+            }
+        } else {
+            setError(result.data.detail || "Sign Up failed.");
+        }
+
         setTimeout(() => {
             setLoading(false);
         }, 1000);
@@ -41,7 +50,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                 backgroundColor: "#ffffff",
                 borderRadius: 24,
             }}>
-                {/* Header */}
                 <Text style={{
                     fontSize: 32,
                     fontWeight: "800",
@@ -50,7 +58,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     textAlign: 'center'
                 }}>Sign up</Text>
 
-                {/* Error Message */}
                 {error ? (
                     <View style={{
                         backgroundColor: "#fef2f2",
@@ -72,7 +79,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     </View>
                 ) : null}
 
-                {/* Email Input */}
                 <View style={{ 
                     width: "100%", 
                     marginBottom: 18
@@ -126,7 +132,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     }} />
                 </View>
 
-                {/* Username Input */}
                 <View style={{ 
                     width: "100%", 
                     marginBottom: 18
@@ -179,7 +184,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     }} />
                 </View>
 
-                {/* Password Input */}
                 <View style={{ 
                     width: "100%",
                     marginBottom: 18
@@ -233,7 +237,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     }} />
                 </View>
 
-                {/* Repeat Password Input */}
                 <View style={{ 
                     width: "100%", 
                     marginBottom: 40
@@ -287,7 +290,6 @@ export default function SignUp({ onLoginPress, onClose }) {
                     }} />
                 </View>
 
-                {/* Sign Up Button */}
                 <TouchableOpacity
                     style={{
                         width: "100%",
@@ -311,11 +313,10 @@ export default function SignUp({ onLoginPress, onClose }) {
                         fontSize: 18,
                         letterSpacing: 0.5
                     }}>
-                        {loading ? "Creating account..." : "Sign up"}
+                        {loading ? "Signing up..." : "Sign up"}
                     </Text>
                 </TouchableOpacity>
 
-                {/* Switch to Login */}
                 <View style={{ 
                     flexDirection: "row", 
                     justifyContent: "center", 
