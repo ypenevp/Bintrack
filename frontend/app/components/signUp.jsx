@@ -26,7 +26,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
         }
 
         setLoading(true);
-        const result = await handleSignUp(username, password, email);
+        const result = await handleSignUp({ username, password, email });
         if(result.ok) {
             if(onShowVerify) {
                 onShowVerify();

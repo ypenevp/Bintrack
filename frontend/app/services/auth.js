@@ -1,7 +1,7 @@
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const handleSignUp = async ( { username, password, email } ) => {
+export const handleSignUp = async ({ username, password, email }) => {
     try {
         const response =  await fetch(`${API_URL}/api/auth/register`, {
             method: "POST",

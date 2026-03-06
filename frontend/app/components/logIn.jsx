@@ -18,7 +18,9 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
         }
         const result = await handleLogin({email, password})
         if (result.ok) {
-            setUser({ email });
+            if (onLoginSuccess) {
+                onLoginSuccess();
+            }
         } else {
             setError(result.data.detail || "Login failed.");
         }
