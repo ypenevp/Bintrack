@@ -3,26 +3,47 @@ import "../global.css";
 import { useNavigation } from '@react-navigation/native';
 import BottomNav from '../components/bottomNav.jsx';
 import TopNav from '../components/topNav.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Login from '../components/logIn.jsx';
 import SignUp from '../components/signUp.jsx';
 import VerifyCode from '../components/verify.jsx';
+import { GetUpdates } from '../services/updates.js';
 
 export default function Home({ navigation }) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [showVerify, setShowVerify] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [updates, setUpdates] = useState([]);
+    const [loadingUpdates, setLoadingUpdates] = useState(true);
 
     const mountainImage = require("../../assets/mountain.png");
     const architectureImage = require("../../assets/architecture.png")
     const inovationImage = require("../../assets/inovation.png")
 
-    const images = [
+    // Fallback images
+    const fallbackImages = [
         { title: "Beautiful Mountain Landscape Photography Collection for Nature Enthusiasts", imageSource: mountainImage },
         { title: "Modern Urban Architecture and City Skylines Development Projects Around the World", imageSource: architectureImage },
         { title: "Advanced Technology Innovation and Digital Transformation Solutions for Business Growth", imageSource: inovationImage },
     ];
+
+    useEffect(() => {
+        const fetchUpdates = async () => {
+            try {
+                setLoadingUpdates(true);
+                const fetchedUpdates = await GetUpdates();
+                setUpdates(fetchedUpdates || []);
+            } catch (error) {
+                console.error('Failed to fetch updates:', error);
+                setUpdates([]);
+            } finally {
+                setLoadingUpdates(false);
+            }
+        };
+
+        fetchUpdates();
+    }, []);
 
     const handleLoginPress = () => {
         setShowLogin(true);
@@ -64,6 +85,8 @@ export default function Home({ navigation }) {
         setShowVerify(false);
         setIsLoggedIn(true);
     };
+
+    
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -255,54 +278,109 @@ export default function Home({ navigation }) {
                         Latest updates
                     </Text>
 
-                    {images.map((item, index) => (
-                        <TouchableOpacity key={index} style={{ alignItems: 'center' }}>
-                            <View style={{
-                                marginBottom: 20,
-                                alignItems: "center",
-                                backgroundColor: '#fff',
-                                borderRadius: 16,
-                                padding: 16,
-                                elevation: 4,
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.1,
-                                shadowRadius: 4,
-                                width: 350,
-                            }}>
-
-                                <View style={{
-                                    width: 300,
-                                    height: 150,
-                                    backgroundColor: '#e5e7eb',
-                                    borderRadius: 16,
-                                    overflow: 'hidden'
-                                }}>
-                                    <Image
-                                        source={item.imageSource}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                        }}
-                                        resizeMode='cover'
-                                    />
-                                </View>
-
-                                <View style={{
-                                    padding: 10,
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: 'bold',
-                                        color: '#1f2937'
+                    {loadingUpdates ? (
+                        <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+                            <Text style={{ fontSize: 16, color: '#666' }}>Loading updates...</Text>
+                        </View>
+                    ) : (
+                        <>
+                            {(updates.length > 0 ? updates : fallbackImages).map((item, index) => (
+                                <TouchableOpacity
+                                    key={item.id || index}
+                                    style={{ alignItems: 'center' }}
+                                    onPress={() => {
+                                        // Pass the update data to the Update page
+                                        if (updates.length > 0) {
+                                            // Real update from API
+                                            navigation.navigate('Update', {
+                                                updateId: item.id,
+                                                updateData: item
+                                            });
+                                        } else {
+                                            // Fallback image - pass index + 1 as ID
+                                            navigation.navigate('Update', {
+                                                updateId: index + 1,
+                                                updateData: {
+                                                    ...item,
+                                                    id: index + 1,
+                                                    article: item.title // Use title as article for fallbacks
+                                                }
+                                            });
+                                        }
+                                    }}
+                                    activeOpacity={0.8}
+                                >
+                                    <View style={{
+                                        marginBottom: 20,
+                                        alignItems: "center",
+                                        backgroundColor: '#fff',
+                                        borderRadius: 16,
+                                        padding: 16,
+                                        elevation: 4,
+                                        shadowColor: '#000',
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.1,
+                                        shadowRadius: 4,
+                                        width: 350,
                                     }}>
-                                        {item.title}
-                                    </Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+
+                                        <View style={{
+                                            width: 300,
+                                            height: 150,
+                                            backgroundColor: '#e5e7eb',
+                                            borderRadius: 16,
+                                            overflow: 'hidden'
+                                        }}>
+                                            <Image
+                                                source={
+                                                    item.picture
+                                                        ? { uri: item.picture }  // Real update image
+                                                        : item.imageSource     // Fallback image
+                                                }
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                }}
+                                                resizeMode='cover'
+                                            />
+                                        </View>
+
+                                        <View style={{
+                                            padding: 10,
+                                            alignItems: 'center',
+                                        }}>
+                                            <Text style={{
+                                                fontSize: 16,
+                                                fontWeight: 'bold',
+                                                color: '#1f2937'
+                                            }}>
+                                                {item.title}
+                                            </Text>
+                                            {item.article && (
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    color: '#666',
+                                                    marginTop: 8,
+                                                    textAlign: 'center',
+                                                    numberOfLines: 3
+                                                }}>
+                                                    {item.article}
+                                                </Text>
+                                            )}
+                                            <Text style={{
+                                                fontSize: 12,
+                                                color: '#4ade80',
+                                                fontWeight: 'bold',
+                                                marginTop: 8,
+                                            }}>
+                                                Tap to read more →
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </>
+                    )}
                 </View>
             </ScrollView>
 

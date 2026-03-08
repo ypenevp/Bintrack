@@ -27,11 +27,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        .requestMatchers("/api/updates/createupdate/").hasRole("ADMIN") // Manage updates
-                        .requestMatchers("/api/updates/deleteupdate/").hasRole("ADMIN")
-                        .requestMatchers("/api/updates/updateupdate/").hasRole("ADMIN")
-                        .requestMatchers("/api/updates/getall/").permitAll() // View updates
-                        .requestMatchers("/api/updates/getupdate/").permitAll()
+                        .requestMatchers("/api/updates/createupdate").hasRole("ADMIN") // Manage updates
+                        .requestMatchers("/api/updates/deleteupdate/**").hasRole("ADMIN")
+                        .requestMatchers("/api/updates/updateupdate/**").hasRole("ADMIN")
+                        .requestMatchers("/api/updates/getall").permitAll() // View updates
+                        .requestMatchers("/api/updates/getupdate/**").permitAll()
 
 
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "WORKER")
