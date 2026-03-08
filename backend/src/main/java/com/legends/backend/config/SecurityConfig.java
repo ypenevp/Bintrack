@@ -33,6 +33,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/updates/getall").permitAll() // View updates
                         .requestMatchers("/api/updates/getupdate/**").permitAll()
 
+                        .requestMatchers("/api/v1/devices/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/sensorData/add").permitAll()
+
 
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "WORKER")
 

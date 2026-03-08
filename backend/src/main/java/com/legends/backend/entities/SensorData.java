@@ -14,7 +14,7 @@ public class SensorData {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "device_id", nullable = false)
+    @Column(name = "device_id", nullable = true)
     private Long deviceID;
 
     @Column(name = "location", nullable = false)
@@ -23,10 +23,13 @@ public class SensorData {
     @Column(name = "fill_percentage", nullable = false)
     private Long fillPercentage;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = true)
     private String address;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private STATUS status;
+
+    @Column(name = "device_token", nullable = false)
+    private String deviceToken;
 }
