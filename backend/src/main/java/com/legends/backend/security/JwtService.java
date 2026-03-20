@@ -23,11 +23,10 @@ public class JwtService {
         this.expiration = expiration;
     }
 
-    // 🔥 ПРОМЕНЕН МЕТОД
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .subject(email)
-                .claim("role", role) // <-- добавяме role
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(Keys.hmacShaKeyFor(secret))
