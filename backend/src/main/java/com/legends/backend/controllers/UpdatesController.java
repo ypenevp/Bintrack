@@ -20,7 +20,7 @@ import com.legends.backend.services.UpdatesService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/updates")
+@RequestMapping("/api/updates")
 public class UpdatesController {
     private final UpdatesService updatesService;
     private final CloudinaryService cloudinaryService;

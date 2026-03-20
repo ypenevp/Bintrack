@@ -1,5 +1,6 @@
 import { Text, View, TextInput, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { handleLogin } from "../services/auth";
 
 export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
     const [email, setEmail] = useState("");
@@ -9,24 +10,25 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
     const [emailFocused, setEmailFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
 
-    const onLoginPress = () => {
+    const onLoginPress = async () => {
         setError("");
         if (!email || !password) {
             setError("Please fill in all fields.");
             return;
         }
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
+        const result = await handleLogin({email, password})
+        if (result.ok) {
             if (onLoginSuccess) {
                 onLoginSuccess();
             }
-        }, 1000);
+        } else {
+            setError(result.data.detail || "Login failed.");
+        }
     };
 
     return (
-        <View style={{ 
-            width: "100%", 
+        <View style={{
+            width: "100%",
             alignItems: "center",
             backgroundColor: "#ffffff",
             borderRadius: 24,
@@ -130,9 +132,9 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
                     <Text style={{ 
                         fontSize: 18, 
                         color: '#9ca3af',
-                        marginRight: 16,
-                        width: 20
-                    }}>🔒</Text>
+                        marginRight: 4,
+                        width: 30
+                    }}>🔑</Text>
                     <View style={{ flex: 1 }}>
                         {(passwordFocused || password) && (
                             <Text style={{

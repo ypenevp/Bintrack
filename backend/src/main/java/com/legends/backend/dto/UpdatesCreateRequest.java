@@ -9,7 +9,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdatesCreateRequest {
     private String title;
     private String article;
-    private Boolean status;
-    private Long id;
     private MultipartFile image;
 }

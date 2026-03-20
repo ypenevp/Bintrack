@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { View, Text, Image, Pressable, Animated, Dimensions, TouchableOpacity, } from "react-native";
 import { StatusBar } from "react-native";
 
-const screenWidth = Dimensions.get("window").width;
-
 const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
     const tabs = [
         { name: "Home", route: "Home" },
@@ -14,6 +12,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
 
     const [open, setOpen] = useState(false);
     const [overlayActive, setOverlayActive] = useState(false);
+    const screenWidth = Dimensions.get("window").width;
     const slideAnim = useState(new Animated.Value(screenWidth))[0];
 
     const togglePanel = () => {
@@ -63,12 +62,11 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
                     overflow: "visible",
                 }}
             >
-                <View style={{ flexDirection: "row", alignItems: "center", paddingLeft: 5 }}>
-                    <TouchableOpacity style={{ width: 60, height: 60, marginRight: -8, overflow: "hidden", borderRadius: 30, justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("Home")}>
-                        <Image source={require("../../assets/logo.png")} style={{ width: 80, height: 80, resizeMode: "cover" }} />
-                    </TouchableOpacity>
-                    <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginLeft: 10, marginBottom: 4 }}>BinTrack</Text>
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ flexDirection: "row", alignItems: "center", paddingLeft: 5 }}>
+                    <Image source={require("../../assets/logo.png")} style={{ width: 50, height: 50, resizeMode: "cover" }} />
+                    <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginLeft: 5, marginBottom: 4 }}>BinTrack</Text>
+                </TouchableOpacity>
+
                 { !isLoggedIn && (
                     <View style={{
                         flexDirection: "row",
@@ -117,7 +115,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
                 )}
 
 
-                <Pressable onPress={togglePanel} style={{ paddingHorizontal: 10, paddingLeft: 10, marginBottom: 2 }}>
+                <Pressable onPress={togglePanel} style={{ paddingHorizontal: 10, paddingLeft: 15, marginBottom: 2, marginRight: -4 }}>
                     <Text style={{ fontSize: 38, color: "#15803d" }}>☰</Text>
                 </Pressable>
 
