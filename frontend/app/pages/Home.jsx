@@ -7,11 +7,13 @@ import { useState } from 'react';
 import Login from '../components/logIn.jsx';
 import SignUp from '../components/signUp.jsx';
 import VerifyCode from '../components/verify.jsx';
+import Success from '../components/success.jsx';
 
 export default function Home({ navigation }) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [showVerify, setShowVerify] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const mountainImage = require("../../assets/mountain.png");
@@ -53,6 +55,8 @@ export default function Home({ navigation }) {
     const closeModals = () => {
         setShowLogin(false);
         setShowSignUp(false);
+        setShowVerify(false);
+        setShowSuccess(false);
     };
 
     const handleShowVerify = () => {
@@ -63,6 +67,11 @@ export default function Home({ navigation }) {
     const handleVerifySuccess = () => {
         setShowVerify(false);
         setIsLoggedIn(true);
+        setShowSuccess(true);
+    };
+
+    const handleSuccessDone = () => {
+        setShowSuccess(false);
     };
 
     return (
@@ -143,7 +152,7 @@ export default function Home({ navigation }) {
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
-                                }}>500+</Text>
+                                }}>3+</Text>
                                 <Text style={{
                                     fontSize: 14,
                                     color: '#e2e8f0',
@@ -393,6 +402,22 @@ export default function Home({ navigation }) {
                     alignItems: 'center',
                 }}>
                     <VerifyCode onSuccess={handleVerifySuccess} />
+                </View>
+            )}
+
+            {showSuccess && (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Success onDone={handleSuccessDone} />
                 </View>
             )}
         </View>

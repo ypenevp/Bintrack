@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Image, Pressable, Animated, Dimensions, TouchableOpacity, } from "react-native";
 import { StatusBar } from "react-native";
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
     const tabs = [
@@ -67,7 +69,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
                     <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginLeft: 5, marginBottom: 4 }}>BinTrack</Text>
                 </TouchableOpacity>
 
-                { !isLoggedIn && (
+                { !isLoggedIn ? (
                     <View style={{
                         flexDirection: "row",
                         backgroundColor: "#f8f9fa",
@@ -110,6 +112,30 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
                             }}>
                                 Sign Up
                             </Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View style={{
+                        flexDirection: "row",
+                        backgroundColor: "#f8f9fa",
+                        borderRadius: 50,
+                        overflow: "hidden",
+                        borderWidth: 1,
+                        borderColor: "#343434",
+                        shadowColor: "#000",
+                        shadowOpacity: 0.1,
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowRadius: 20,
+                        elevation: 3,
+                        marginRight: -138,
+                        marginBottom: 2,
+                    }}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={{
+                            paddingHorizontal: 2,
+                            paddingVertical: 2,
+                            backgroundColor: "#fff",
+                        }}>
+                            <AntDesign name="user" size={38} color="#15803d" />
                         </TouchableOpacity>
                     </View>
                 )}
