@@ -65,7 +65,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress, isLoggedIn }) => {
                 }}
             >
                 <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ flexDirection: "row", alignItems: "center", paddingLeft: 5 }}>
-                    <Image source={require("../../assets/image.png")} style={{ width: 50, height: 50, resizeMode: "cover" }} />
+                    <Image source={require("../../assets/logo.png")} style={{ width: 50, height: 50, resizeMode: "cover" }} />
                     <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginLeft: 5, marginBottom: 4 }}>BinTrack</Text>
                 </TouchableOpacity>
 
