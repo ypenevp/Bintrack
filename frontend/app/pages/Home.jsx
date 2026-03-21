@@ -497,6 +497,7 @@ export default function Home({ navigation }) {
                     <Success onDone={handleSuccessDone} />
                 </View>
             )}
+            
         </View>
     );
 }

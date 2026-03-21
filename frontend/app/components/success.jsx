@@ -15,7 +15,7 @@ export default function Success({ onDone }) {
     }, [onDone]);
 
     return (
-        <View style={{ flex: 1, alignItems: "center", backgroundColor: "#f0f0f0" }}>
+        <View style={{ flex: 1, alignItems: "center", width: "100%", justifyContent: "center" }}>
             
             <View style={{
                 width: 370,

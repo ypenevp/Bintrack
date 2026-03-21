@@ -339,9 +339,6 @@ export default function Settings({ navigation }) {
         console.log('Selected language:', label, value);
     };
 
-    const handleSignOut = () => {
-        // logout();
-    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>

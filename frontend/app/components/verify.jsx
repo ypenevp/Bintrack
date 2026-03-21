@@ -62,28 +62,6 @@ export default function VerifyCode({ onSuccess }) {
                         fontWeight: "500",
                         letterSpacing: 0.5,
                     }}
-                    placeholder="Email"
-                    placeholderTextColor="#888"
-                    keyboardType="email-address"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-
-                <TextInput
-                    style={{
-                        width: "100%",
-                        borderWidth: 1,
-                        borderColor: "#d1d5db",
-                        borderRadius: 16,
-                        paddingHorizontal: 20,
-                        paddingVertical: 12,
-                        marginBottom: 16,
-                        fontSize: 18,
-                        backgroundColor: "#F7FAFC",
-                        color: "#222",
-                        fontWeight: "500",
-                        letterSpacing: 0.5,
-                    }}
                     placeholder="Verification Code"
                     placeholderTextColor="#888"
                     value={code}
