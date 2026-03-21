@@ -9,21 +9,22 @@ import SignUp from '../components/signUp.jsx';
 import VerifyCode from '../components/verify.jsx';
 import { GetUpdates } from '../services/updates.js';
 import Success from '../components/success.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function Home({ navigation }) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [showVerify, setShowVerify] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [updates, setUpdates] = useState([]);
     const [loadingUpdates, setLoadingUpdates] = useState(true);
+    const { user } = useAuth();
+    const isLoggedIn = !!user;
 
     const mountainImage = require("../../assets/mountain.png");
     const architectureImage = require("../../assets/architecture.png")
     const inovationImage = require("../../assets/inovation.png")
 
-    // Fallback images
     const fallbackImages = [
         { title: "Beautiful Mountain Landscape Photography Collection for Nature Enthusiasts", imageSource: mountainImage },
         { title: "Modern Urban Architecture and City Skylines Development Projects Around the World", imageSource: architectureImage },
@@ -68,7 +69,6 @@ export default function Home({ navigation }) {
     };
 
     const handleLoginSuccess = () => {
-        setIsLoggedIn(true);
         setShowLogin(false);
         setShowSignUp(false);
     };
@@ -87,7 +87,6 @@ export default function Home({ navigation }) {
 
     const handleVerifySuccess = () => {
         setShowVerify(false);
-        setIsLoggedIn(true);
         setShowSuccess(true);
     };
 

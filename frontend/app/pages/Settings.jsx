@@ -14,6 +14,7 @@ import "../global.css";
 import TopNav from '../components/topNav.jsx';
 import BottomNav from '../components/bottomNav.jsx';
 import PersonalInfoModal from '../components/PersonalInfo.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const mockUser = {
     name: 'Borislav Stoinev',
@@ -311,6 +312,7 @@ export default function Settings({ navigation }) {
     const [selectedLanguage, setSelectedLanguage] = useState('English');
     const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
     const [showPersonalInfo, setShowPersonalInfo] = useState(false);
+    const {logout} = useAuth();
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -561,7 +563,7 @@ export default function Settings({ navigation }) {
                         icon={<Feather name="log-out" size={18} color="#ef4444" />}
                         label="Sign Out"
                         destructive
-                        onPress={handleSignOut}
+                        onPress={logout}
                     />
                 </View>
 
