@@ -1,3 +1,5 @@
 package com.legends.backend.dto;
 
-public record UserResponse(String email, String username) {}
+import com.legends.backend.entities.ROLE;
+
+public record UserResponse(String email, String username, ROLE role) {}

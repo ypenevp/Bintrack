@@ -107,7 +107,7 @@ export default function Home({ navigation }) {
 
             <ScrollView style={{ flex: 1, height: '100%' }} contentContainerStyle={{ alignItems: 'center' , paddingBottom: 20}}>
                 <View
-                    style={{ 
+                    style={{
                         minHeight: 500,
                         width: '100%',
                         paddingHorizontal: 30,
@@ -375,14 +375,6 @@ export default function Home({ navigation }) {
                                                     {item.article}
                                                 </Text>
                                             )}
-                                            <Text style={{
-                                                fontSize: 12,
-                                                color: '#4ade80',
-                                                fontWeight: 'bold',
-                                                marginTop: 8,
-                                            }}>
-                                                Tap to read more →
-                                            </Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>

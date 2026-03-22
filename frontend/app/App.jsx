@@ -5,22 +5,27 @@ import Settings from './pages/Settings.jsx';
 import Stats from './pages/Stats.jsx';
 import Map from './pages/Map.jsx';
 import Update from "./components/update";
+import FormUpdates from './pages/Admins/Updates.jsx';
 import { AuthProvider } from '../context/AuthContext.jsx';
+import { UserProvider } from '../context/UserContext.jsx';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Update" component={Update} />
-          <Stack.Screen name="Settings" component={Settings} />
-          <Stack.Screen name="Stats" component={Stats} />
-          <Stack.Screen name="Map" component={Map} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Update" component={Update} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="Stats" component={Stats} />
+            <Stack.Screen name="Map" component={Map} />
+            <Stack.Screen name="Updates" component={FormUpdates} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserProvider>
     </AuthProvider>
   );
 }

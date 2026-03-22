@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { Ionicons, Feather, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { useUser } from '../../context/UserContext.jsx';
 
 const SectionLabel = ({ icon, label }) => (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 20, marginBottom: 8 }}>
@@ -64,6 +66,10 @@ const Field = ({ label, defaultValue, style }) => (
 );
 
 export default function PersonalInfoModal({ visible, onClose }) {
+    const [profileImage, setProfileImage] = React.useState(null);
+    const { user: authUser, logout } = useAuth();
+    const { user: userDetails } = useUser();
+
     return (
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
             <Pressable
@@ -153,14 +159,16 @@ export default function PersonalInfoModal({ visible, onClose }) {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <Text style={{ fontSize: 18, fontWeight: '700', color: '#fff' }}>BS</Text>
+                                <Text style={{ fontSize: 18, fontWeight: '700', color: '#fff' }}>
+                                    {userDetails?.username ? userDetails.username.charAt(0) : 'BS'}
+                                </Text>
                             </View>
                             <View style={{ flex: 1, marginLeft: 12 }}>
                                 <Text style={{ fontSize: 16, fontWeight: '600', color: '#1f2937' }}>
-                                    Borislav Stoinev
+                                    {userDetails?.username || 'Borislav Stoinev'}
                                 </Text>
                                 <Text style={{ fontSize: 13, color: '#9ca3af', marginTop: 1 }}>
-                                    borislav@example.com
+                                    {userDetails?.email || 'borislav@example.com'}
                                 </Text>
                             </View>
                             <TouchableOpacity onPress={pickImage}>
@@ -176,8 +184,8 @@ export default function PersonalInfoModal({ visible, onClose }) {
                             label="Full Name"
                         />
                         <View style={{ flexDirection: 'row', gap: 10 }}>
-                            <Field label="First name" defaultValue="Borislav" />
-                            <Field label="Last name" defaultValue="Stoinev" />
+                            <Field label="First name" defaultValue={userDetails?.firstName || 'Borislav'} />
+                            <Field label="Last name" defaultValue={userDetails?.lastName || 'Stoinev'} />
                         </View>
 
                         {/* Email */}
@@ -187,7 +195,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
                         />
                         <View>
                             <TextInput
-                                defaultValue="borislav@example.com"
+                                defaultValue={userDetails?.email || 'borislav@example.com'}
                                 style={{
                                     backgroundColor: '#f4f5f7',
                                     borderRadius: 10,

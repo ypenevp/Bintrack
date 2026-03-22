@@ -4,27 +4,47 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const [authUser, setAuthUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const checkToken = async () => {
-            const token = await AsyncStorage.getItem('access');
-            if (token) setUser({ token });
+            try {
+                const token = await AsyncStorage.getItem('access');
+                if (token) {
+                    setAuthUser({ token });
+                    console.log("Token found, user authenticated");
+                } else {
+                    console.log("No token found, user not authenticated");
+                    setAuthUser(null);
+                }
+            } catch (error) {
+                console.error("Error checking token:", error);
+                setAuthUser(null);
+            } finally {
+                setIsLoading(false);
+            }
         };
         checkToken();
     }, []);
 
-    const login = (userData) => setUser(userData);
+    const login = (userData) => setAuthUser(userData);
     const logout = async () => {
         await AsyncStorage.removeItem('access');
-        setUser(null);
+        setAuthUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user: authUser, login, logout, isLoading }}>
             {children}
         </AuthContext.Provider>
     );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within AuthProvider');
+    }
+    return context;
+};

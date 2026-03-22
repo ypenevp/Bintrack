@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     View,
     Text,
@@ -15,11 +15,12 @@ import TopNav from '../components/topNav.jsx';
 import BottomNav from '../components/bottomNav.jsx';
 import PersonalInfoModal from '../components/PersonalInfo.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useUser } from '../../context/UserContext.jsx';
 
 const mockUser = {
     name: 'Borislav Stoinev',
     email: 'borislav@example.com',
-    role: 'Admin',
+    role: 'Random User',
 };
 
 const languageOptions = [
@@ -312,7 +313,11 @@ export default function Settings({ navigation }) {
     const [selectedLanguage, setSelectedLanguage] = useState('English');
     const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
     const [showPersonalInfo, setShowPersonalInfo] = useState(false);
-    const {logout} = useAuth();
+
+    const { user: authUser, logout } = useAuth();
+    const { user: userDetails } = useUser();
+    const isLoggedIn = !!authUser;
+
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -337,6 +342,11 @@ export default function Settings({ navigation }) {
     const handleLanguageChange = (label, value) => {
         setSelectedLanguage(label);
         console.log('Selected language:', label, value);
+    };
+
+    const handleSignOut = async () => {
+        await logout();
+        navigation.navigate('Home');
     };
 
 
@@ -401,7 +411,7 @@ export default function Settings({ navigation }) {
                         color: '#111827',
                         letterSpacing: -0.5,
                     }}>
-                        {mockUser.name}
+                        {userDetails?.username || mockUser.name}
                     </Text>
 
                     <Text style={{
@@ -409,7 +419,7 @@ export default function Settings({ navigation }) {
                         color: '#6b7280',
                         marginTop: 2,
                     }}>
-                        {mockUser.email}
+                        {userDetails?.email || mockUser.email}
                     </Text>
 
                     <View style={{
@@ -424,7 +434,7 @@ export default function Settings({ navigation }) {
                             fontWeight: '600',
                             color: '#3b82f6',
                         }}>
-                            {mockUser.role}
+                            {userDetails?.role || mockUser.role}
                         </Text>
                     </View>
                 </View>
@@ -444,7 +454,7 @@ export default function Settings({ navigation }) {
                     <SettingRow
                         icon={<Feather name="user" size={18} color="#6b7280" />}
                         label="Personal Information"
-                        value={mockUser.name}
+                        value={userDetails?.username || mockUser.name}
                         onPress={() => setShowPersonalInfo(true)}
                     />
                     <View style={{
@@ -544,25 +554,27 @@ export default function Settings({ navigation }) {
                     </View>
                 </View>
 
-                <View style={{
-                    backgroundColor: '#fff',
-                    borderRadius: 16,
-                    marginTop: 12,
-                    marginBottom: 16,
-                    overflow: 'hidden',
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.04,
-                    shadowRadius: 3,
-                    elevation: 1,
-                }}>
-                    <SettingRow
-                        icon={<Feather name="log-out" size={18} color="#ef4444" />}
-                        label="Sign Out"
-                        destructive
-                        onPress={logout}
-                    />
-                </View>
+                {isLoggedIn && (
+                    <View style={{
+                        backgroundColor: '#fff',
+                        borderRadius: 16,
+                        marginTop: 12,
+                        marginBottom: 16,
+                        overflow: 'hidden',
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowOpacity: 0.04,
+                        shadowRadius: 3,
+                        elevation: 1,
+                    }}>
+                        <SettingRow
+                            icon={<Feather name="log-out" size={18} color="#ef4444" />}
+                            label="Sign Out"
+                            destructive
+                            onPress={handleSignOut}
+                        />
+                    </View>
+                )}
 
                 <View style={{ height: 50 }} />
             </ScrollView>

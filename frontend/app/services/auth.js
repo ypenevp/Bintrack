@@ -1,6 +1,8 @@
 import { API_URL } from "@env";
 console.log("IP from env:", API_URL);
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from 'jwt-decode';
 
 export const handleSignUp = async ({ username, password, email }) => {
     try {
@@ -58,7 +60,7 @@ export const handleVerify = async ({ code }) => {
             body: JSON.stringify({ code }),
         });
 
-        if (response.ok) { // always add 
+        if (response.ok) { // always add
             return {
                 ok: true,
                 data: { detail: "Email verified successfully" }
@@ -114,6 +116,20 @@ export const handleLogin = async ({ email, password }) => {
 
         if (response.ok) {
             await AsyncStorage.setItem("access", data.token); //VERY COMMON ERROR !!! (access -> token)
+            try {
+                const decoded = jwtDecode(data.token);
+                const userRole = decoded.role; // "ADMIN", "USER", "WORKER"
+                // const userEmail = decoded.email;
+                
+                await AsyncStorage.setItem("userRole", userRole);
+                // await AsyncStorage.setItem("userEmail", userEmail);
+                
+                console.log("The role of the user:", userRole);
+                // console.log("The email of the user:", userEmail);
+                
+            } catch (decodeError) {
+                console.error("Error while decoding JWT:", decodeError);
+            }
         } else {
         }
 

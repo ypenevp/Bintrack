@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable, Animated, Dimensions, TouchableOpacity } from "react-native";
 import { StatusBar } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useUser } from '../../context/UserContext.jsx';
 
 const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
-    const { user } = useAuth();
-    const isLoggedIn = !!user;
+    const { user: authUser, isLoading: authLoading } = useAuth();
+    const { user: userDetails } = useUser();
+    const isLoggedIn = !!authUser;
 
     const tabs = [
         { name: "Home", route: "Home" },
         { name: "Map", route: "Map" },
         { name: "Stats", route: "Stats" },
         { name: "Settings", route: "Settings" },
+        { name: "Updates", route: "Updates" },
     ];
 
     const [open, setOpen] = useState(false);
@@ -43,6 +46,37 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
         }
     };
 
+    const visibleTabs = tabs.filter(tab => {
+        if (tab.route === "Updates") {
+            return isLoggedIn && userDetails?.role === "ADMIN";
+        }
+        return true;
+    });
+
+    if (authLoading) {
+        return (
+            <View style={{
+                width: "100%",
+                height: 110,
+                backgroundColor: "#fff",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingBottom: 8,
+                paddingTop: 50,
+            }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ flexDirection: "row", alignItems: "center", paddingLeft: 5 }}>
+                    <Image source={require("../../assets/logo.png")} style={{ width: 70, height: 70, resizeMode: "cover" }} />
+                    <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginBottom: 4 }}>BinTrack</Text>
+                </TouchableOpacity>
+                <Pressable onPress={togglePanel} style={{ paddingHorizontal: 10, marginRight: -4 }}>
+                    <Text style={{ fontSize: 38, color: "#15803d" }}>☰</Text>
+                </Pressable>
+            </View>
+        );
+    }
+
+
     return (
         <>
             <StatusBar value="auto" />
@@ -68,7 +102,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                     <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginBottom: 4 }}>BinTrack</Text>
                 </TouchableOpacity>
 
-                {!isLoggedIn ? (
+                {!isLoggedIn && (
                     <View style={{
                         flexDirection: "row",
                         backgroundColor: "#f8f9fa",
@@ -93,25 +127,6 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                             backgroundColor: "#15803d",
                         }} onPress={onSignUpPress}>
                             <Text style={{ fontSize: 14, fontWeight: "600", color: "#fff" }}>Sign Up</Text>
-                        </TouchableOpacity>
-                    </View>
-                ) : (
-                    <View style={{
-                        flexDirection: "row",
-                        backgroundColor: "#f8f9fa",
-                        borderRadius: 50,
-                        overflow: "hidden",
-                        borderWidth: 1,
-                        borderColor: "#343434",
-                        marginRight: -138,
-                        marginBottom: 2,
-                    }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={{
-                            paddingHorizontal: 2,
-                            paddingVertical: 2,
-                            backgroundColor: "#fff",
-                        }}>
-                            <AntDesign name="user" size={38} color="#15803d" />
                         </TouchableOpacity>
                     </View>
                 )}
@@ -168,7 +183,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                         <Text style={{ fontSize: 18, fontWeight: "bold", color: "#15803d" }}>➜</Text>
                     </TouchableOpacity>
 
-                    {tabs.map((tab, index) => (
+                    {visibleTabs.map((tab, index) => (
                         <TouchableOpacity
                             key={index}
                             onPress={() => navigateTo(tab)}
@@ -178,7 +193,9 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                                 borderBottomColor: "#e5e7eb",
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: "bold", color: "#15803d" }}>{tab.name}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "bold", color: "#15803d" }}>
+                                {tab.name}
+                            </Text>
                         </TouchableOpacity>
                     ))}
                 </Animated.View>
