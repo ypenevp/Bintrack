@@ -1,50 +1,58 @@
 import { API_URL } from "@env";
-console.log("IP from env:", API_URL);
 import AsyncStorage from "@react-native-async-storage/async-storage";
+console.log("IP from env:", API_URL)
 
-export async function AddUpdate(title, article, image) { // POST fetch with images
+export async function AddUpdate(title, article, image) {
     try {
-
         const token = await AsyncStorage.getItem("access");
         if (!token) {
             throw new Error("Authentication failed!");
         }
 
+        if (!image) {
+            throw new Error("Image is required!");
+        }
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('article', article);
+        
         formData.append('image', {
-            uri: image.uri,
-            type: image.type || 'image/jpeg',
-            name: image.name || 'update-image.jpg'
-        })
+            uri: image,
+            type: 'image/jpeg',
+            name: image.split('/').pop() || 'update-image.jpg'
+        });
+
+        console.log("Sending update with image:", image);
 
         const response = await fetch(`${API_URL}/api/updates/createupdate`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
             },
             body: formData
         });
 
+        console.log("Response status:", response.status);
 
         if (response.ok) {
             const data = await response.json();
+            console.log("Update created successfully:", data);
             return data;
         } else {
-            throw new Error("Failed to create update");
+            const errorText = await response.text();
+            console.error("Server response:", response.status, errorText);
+            throw new Error(`Failed to create update: ${response.status}`);
         }
 
     } catch (error) {
         console.error('Error creating update:', error);
         throw error;
     }
-
 }
 
 export async function EditUpdate(id) { // Patch updates
-     try {
+    try {
 
         const token = await AsyncStorage.getItem("access");
         if (!token) {

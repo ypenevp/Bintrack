@@ -16,6 +16,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
         { name: "Stats", route: "Stats" },
         { name: "Settings", route: "Settings" },
         { name: "Updates", route: "Updates" },
+        { name: "Users", route: "Users" }
     ];
 
     const [open, setOpen] = useState(false);
@@ -48,6 +49,9 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
 
     const visibleTabs = tabs.filter(tab => {
         if (tab.route === "Updates") {
+            return isLoggedIn && userDetails?.role === "ADMIN";
+        }
+        if (tab.route === "Users") {
             return isLoggedIn && userDetails?.role === "ADMIN";
         }
         return true;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.legends.backend.entities.ROLE;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -91,5 +92,9 @@ public class AuthService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return new UserResponse(user.getEmail(), user.getUsername(), user.getRole());
+    }
+
+    public List<User> getAllUsers(){
+        return this.userRepo.findAll();
     }
 }

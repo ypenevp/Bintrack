@@ -6,6 +6,7 @@ import Stats from './pages/Stats.jsx';
 import Map from './pages/Map.jsx';
 import Update from "./components/update";
 import FormUpdates from './pages/Admins/Updates.jsx';
+import FormUpdates1 from './pages/Admins/Users.jsx';
 import { AuthProvider } from '../context/AuthContext.jsx';
 import { UserProvider } from '../context/UserContext.jsx';
 
@@ -23,6 +24,7 @@ export default function App() {
             <Stack.Screen name="Stats" component={Stats} />
             <Stack.Screen name="Map" component={Map} />
             <Stack.Screen name="Updates" component={FormUpdates} />
+            <Stack.Screen name="Users" component={FormUpdates1} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>

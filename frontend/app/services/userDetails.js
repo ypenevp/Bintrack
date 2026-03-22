@@ -25,3 +25,23 @@ export async function GetUserDetails() {
         throw error;
     }
 }
+
+export async function GetAllUsers(){
+    try {
+        const response = await fetch(`${API_URL}/api/auth/getallusers`, {
+            method: "GET",
+        });
+
+        if (response.ok){
+            const data = await response.json();
+            return data;
+        } else {
+            throw new Error("Failed to fetch users");
+        }
+    } catch (error) {
+        console.error("Error fetching users data:", error);
+        throw error;
+    }
+}
+
+

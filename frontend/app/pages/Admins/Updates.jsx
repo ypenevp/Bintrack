@@ -2,24 +2,14 @@ import { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity, Platform, ScrollView } from "react-native";
 import TopNav from "../../components/topNav.jsx";
 import BottomNav from "../../components/bottomNav.jsx";
-import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { GetUserDetails } from "../../services/userDetails.js";
 import { AddUpdate } from "../../services/updates.js";
 
-let DateTimePicker = null;
-if (Platform.OS !== 'web') {
-    try {
-        DateTimePicker = require('@react-native-community/datetimepicker').default;
-    } catch (error) {
-    }
-}
-
-export default function FormUpdates({ onLoginPress, onVerifyPress, navigation }) {
+export default function FormUpdates({ navigation }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedFile, setSelectedFile] = useState(null);
     const [userRole, setUserRole] = useState(null);
     const [image, setImage] = useState(null);
 
@@ -31,61 +21,45 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
         fetchUserDetails();
     }, []);
 
-    const pickFile = async () => {
-        try {
-            const result = await DocumentPicker.getDocumentAsync({
-                type: '*/*',
-                copyToCacheDirectory: true
-            });
+    const pickImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-            if (!result.canceled) {
-                setSelectedFile(result.assets[0]);
-            }
-        } catch (error) {
-            alert('Error selecting file');
-        }
-    };
-
-    const removeFile = () => {
-        setSelectedFile(null);
-    };
-
-    const formatFileSize = (bytes) => {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    };
-
-    const onSubmit = () => {
-        if (!title || !description) {
-            alert("Please fill in all fields.");
+        if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions!');
             return;
         }
 
-        if (!selectedFile) {
-            alert("Please select an image.");
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const onSubmit = () => {
+        if (!title || !description || !image) {
+            alert("Please fill in all fields.");
             return;
         }
 
         setLoading(true);
 
-        const imageFile = {
-            uri: selectedFile.uri,
-            type: selectedFile.mimeType || 'image/jpeg',
-            name: selectedFile.name || 'update-image.jpg'
-        };
-
-        AddUpdate(title, description, imageFile)
+        AddUpdate(title, description, image)
             .then(response => {
                 alert("Update added successfully!");
                 setTitle("");
                 setDescription("");
-                setSelectedFile(null);
+                setImage(null);
+                console.log("Update added:", response);
             })
             .catch(error => {
                 alert("Error adding update. Please try again.");
+                console.log("Error adding update:", error);
             })
             .finally(() => {
                 setLoading(false);
@@ -115,7 +89,7 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
                             color: "#15803d",
                             marginBottom: 24
                         }}>Update Form</Text>
-                        
+
                         <TextInput
                             style={{
                                 width: "100%",
@@ -179,33 +153,32 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
                                 style={{
                                     width: "100%",
                                     borderWidth: 1,
-                                    borderColor: selectedFile ? "#15803d" : "#d1d5db",
+                                    borderColor: image ? "#15803d" : "#d1d5db",
                                     borderRadius: 16,
                                     paddingHorizontal: 20,
                                     paddingVertical: 12,
-                                    backgroundColor: selectedFile ? "#f0f9f0" : "#F7FAFC",
+                                    backgroundColor: image ? "#f0f9f0" : "#F7FAFC",
                                     flexDirection: "row",
                                     justifyContent: "space-between",
                                     alignItems: "center",
                                 }}
-                                onPress={pickFile}
+                                onPress={pickImage}
                             >
                                 <View style={{ flex: 1 }}>
-                                    {selectedFile ? (
+                                    {image ? (
                                         <View>
                                             <Text style={{
                                                 fontSize: 16,
                                                 color: "#222",
                                                 fontWeight: "500",
                                             }} numberOfLines={1}>
-                                                {selectedFile.name}
+                                                {image.split('/').pop()}
                                             </Text>
                                             <Text style={{
                                                 fontSize: 12,
                                                 color: "#666",
                                                 marginTop: 2,
                                             }}>
-                                                {formatFileSize(selectedFile.size)}
                                             </Text>
                                         </View>
                                     ) : (
@@ -220,7 +193,7 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
                                 </View>
                             </TouchableOpacity>
 
-                            {selectedFile && (
+                            {image && (
                                 <TouchableOpacity
                                     style={{
                                         marginTop: 8,
@@ -228,7 +201,6 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
                                         paddingVertical: 4,
                                         paddingHorizontal: 8,
                                     }}
-                                    onPress={removeFile}
                                 >
                                     <Text style={{
                                         fontSize: 14,
@@ -269,7 +241,7 @@ export default function FormUpdates({ onLoginPress, onVerifyPress, navigation })
                     <Text style={{ fontSize: 16, color: "#555", marginTop: 8 }}>You do not have permission to view this page.</Text>
                 </View>
             )}
-            
+
             <BottomNav navigation={navigation} />
         </View>
     );

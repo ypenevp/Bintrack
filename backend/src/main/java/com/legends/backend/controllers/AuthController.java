@@ -1,8 +1,12 @@
 package com.legends.backend.controllers;
 
 import com.legends.backend.dto.*;
+import com.legends.backend.entities.Updates;
+import com.legends.backend.entities.User;
 import com.legends.backend.services.AuthService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -36,4 +40,10 @@ public class AuthController {
     public UserResponse getUserData(@RequestAttribute("email") String email) {
         return authService.getUserData(email);
     }
+
+    @GetMapping("/getallusers")
+    public List<User> getAllUsers() {
+        return this.authService.getAllUsers();
+    }
+
 }
