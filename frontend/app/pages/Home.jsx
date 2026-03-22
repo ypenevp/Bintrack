@@ -417,6 +417,7 @@ export default function Home({ navigation }) {
                         <Login
                             onSignUpPress={handleSwitchToSignUp}
                             onLoginSuccess={handleLoginSuccess}
+                            onClose = {closeModals}
                         />
                     </View>
                 </View>
@@ -453,6 +454,7 @@ export default function Home({ navigation }) {
                         <SignUp
                             onLoginPress={handleSwitchToLogin}
                             onShowVerify={handleShowVerify}
+                            onClose={closeModals}
                         />
                     </View>
                 </View>

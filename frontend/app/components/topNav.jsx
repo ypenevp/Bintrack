@@ -88,18 +88,18 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 shadowColor: "#000",
-                shadowOffset: { width: 0, height: 6 },
-                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 8 },
+                shadowOpacity: 0.4,
                 shadowRadius: 6,
                 elevation: 8,
                 zIndex: 50,
-                paddingBottom: 8,
+                paddingBottom: 4,
                 paddingTop: 50,
                 overflow: "visible",
             }}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ flexDirection: "row", alignItems: "center", paddingLeft: 5 }}>
-                    <Image source={require("../../assets/logo.png")} style={{ width: 70, height: 70, resizeMode: "cover" }} />
-                    <Text style={{ fontSize: 24, fontWeight: "bold", color: "#15803d", marginBottom: 4 }}>BinTrack</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", alignContent: "center", paddingLeft: 0, paddingRight: 0}}>
+                    <Image source={require("../../assets/logo.png")} style={{ width: 60, height: 60, resizeMode: "cover" }} />
+                    <Text style={{ fontSize: 18, fontWeight: "bold", color: "#15803d", marginBottom: 0 }}>JunkBuddy</Text>
                 </TouchableOpacity>
 
                 {!isLoggedIn && (
@@ -108,22 +108,22 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                         backgroundColor: "#f8f9fa",
                         borderRadius: 15,
                         overflow: "hidden",
-                        borderWidth: 1,
-                        borderColor: "#343434",
+                        borderWidth: 2,
+                        borderColor: "#15803d",
                         marginRight: -22,
-                        marginBottom: 5,
+                        marginBottom: 0,
                     }}>
                         <TouchableOpacity onPress={onLoginPress} style={{
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
+                            paddingHorizontal: 12,
+                            paddingVertical: 6,
                             backgroundColor: "#fff",
                             marginRight: 1,
                         }}>
                             <Text style={{ fontSize: 14, fontWeight: "600", color: "#15803d" }}>Log In</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
+                            paddingHorizontal: 12,
+                            paddingVertical: 6,
                             backgroundColor: "#15803d",
                         }} onPress={onSignUpPress}>
                             <Text style={{ fontSize: 14, fontWeight: "600", color: "#fff" }}>Sign Up</Text>
@@ -131,7 +131,7 @@ const TopNav = ({ navigation, onLoginPress, onSignUpPress }) => {
                     </View>
                 )}
 
-                <Pressable onPress={togglePanel} style={{ paddingHorizontal: 10, paddingLeft: 15, marginBottom: 2, marginRight: -4 }}>
+                <Pressable onPress={togglePanel} style={{ paddingHorizontal: 10, paddingLeft: 15, marginBottom: 0, marginRight: 5, marginLeft: 0 }}>
                     <Text style={{ fontSize: 38, color: "#15803d" }}>☰</Text>
                 </Pressable>
             </View>
