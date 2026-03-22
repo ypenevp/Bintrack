@@ -27,6 +27,11 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
         }
     };
 
+    const onClosePress = () => {
+        if (loading) return;
+        onClose();
+    };
+
     return (
         <View style={{
             width: "100%",
@@ -58,8 +63,20 @@ export default function Login({ onSignUpPress, onLoginSuccess, onClose }) {
                 </View>
             ) : null}
 
+            <TouchableOpacity onPress={onClosePress} style={{
+                position: "absolute",
+                top: -8,
+                left: -4
+            }}>
+                <Text style={{ fontSize: 24, color: "#15803d" }}>
+                    ←
+                </Text>
+            </TouchableOpacity>
+
             <View style={{ width: "100%", marginBottom: 18 }}>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 12 }}>
+
                     <Text style={{ fontSize: 18, color: '#9ca3af', marginRight: 16, width: 20 }}>👤</Text>
                     <View style={{ flex: 1 }}>
                         {(emailFocused || email) && (

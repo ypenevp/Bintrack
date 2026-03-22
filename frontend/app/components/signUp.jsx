@@ -14,6 +14,11 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [repeatPasswordFocused, setRepeatPasswordFocused] = useState(false);
 
+    const onClosePress = () => {
+        if (loading) return;
+        onClose();
+    };
+
     const onSignUpPress = async () => {
         setError("");
         if (!email || !username || !password || !repeatPassword) {
@@ -50,6 +55,15 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                 backgroundColor: "#ffffff",
                 borderRadius: 24,
             }}>
+                <TouchableOpacity onPress={onClosePress} style={{
+                    position: "absolute",
+                    top: -8,
+                    left: -4
+                }}>
+                    <Text style={{ fontSize: 24, color: "#15803d" }}>
+                        ←
+                    </Text>
+                </TouchableOpacity>
                 <Text style={{
                     fontSize: 32,
                     fontWeight: "800",
