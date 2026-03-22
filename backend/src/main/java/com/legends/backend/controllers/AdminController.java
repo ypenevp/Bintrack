@@ -1,6 +1,8 @@
 package com.legends.backend.controllers;
 
 import com.legends.backend.dto.UpdateRoleRequest;
+
+import com.legends.backend.dto.UserResponse;
 import com.legends.backend.repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ public class AdminController {
     }
 
     @PatchMapping("/users/role")
-    public void updateUserRole(
+    public UserResponse updateUserRole(
             @RequestBody UpdateRoleRequest request,
             @RequestAttribute("email") String adminEmail
     ) {
@@ -29,5 +31,7 @@ public class AdminController {
         userRepo.save(user);
 
         System.out.println("User " + request.getEmail() + " role updated to: " + request.getRole());
+
+        return new UserResponse(user.getEmail(), user.getUsername(), user.getRole());
     }
 }
