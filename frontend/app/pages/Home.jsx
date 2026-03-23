@@ -98,13 +98,6 @@ export default function Home({ navigation }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <TopNav
-                navigation={navigation}
-                onLoginPress={handleLoginPress}
-                onSignUpPress={handleSignUpPress}
-                isLoggedIn={isLoggedIn}
-            />
-
             <ScrollView style={{ flex: 1, height: '100%' }} contentContainerStyle={{ alignItems: 'center' , paddingBottom: 20}}>
                 <View
                     style={{
@@ -174,12 +167,15 @@ export default function Home({ navigation }) {
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
-                                }}>3+</Text>
+                                }}>2</Text>
                                 <Text style={{
                                     fontSize: 14,
                                     color: '#e2e8f0',
                                     textAlign: 'center'
                                 }}>Smart Bins</Text>
+
+                                <Text style={{ fontSize: 5, color: '#e2e8f0' }}>*one got incinerated by a soldering iron thanks to our expert backend team</Text>
+
                             </View>
                             <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Text style={{
@@ -189,7 +185,7 @@ export default function Home({ navigation }) {
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
-                                }}>40%</Text>
+                                }}>60%</Text>
                                 <Text style={{
                                     fontSize: 14,
                                     color: '#e2e8f0',
@@ -297,21 +293,18 @@ export default function Home({ navigation }) {
                                     key={item.id || index}
                                     style={{ alignItems: 'center' }}
                                     onPress={() => {
-                                        // Pass the update data to the Update page
                                         if (updates.length > 0) {
-                                            // Real update from API
                                             navigation.navigate('Update', {
                                                 updateId: item.id,
                                                 updateData: item
                                             });
                                         } else {
-                                            // Fallback image - pass index + 1 as ID
                                             navigation.navigate('Update', {
                                                 updateId: index + 1,
                                                 updateData: {
                                                     ...item,
                                                     id: index + 1,
-                                                    article: item.title // Use title as article for fallbacks
+                                                    article: item.title
                                                 }
                                             });
                                         }
@@ -342,8 +335,8 @@ export default function Home({ navigation }) {
                                             <Image
                                                 source={
                                                     item.picture
-                                                        ? { uri: item.picture }  // Real update image
-                                                        : item.imageSource     // Fallback image
+                                                        ? { uri: item.picture } 
+                                                        : item.imageSource     
                                                 }
                                                 style={{
                                                     width: '100%',
@@ -384,7 +377,7 @@ export default function Home({ navigation }) {
                 </View>
             </ScrollView>
 
-            <BottomNav navigation={navigation} />
+            {/* <BottomNav navigation={navigation} /> */}
 
             {showLogin && (
                 <View style={{

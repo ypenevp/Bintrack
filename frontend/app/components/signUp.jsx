@@ -48,17 +48,19 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
     };
 
     return (
-        <ScrollView style={{ width: "100%" }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ width: "100%", bottom: 0 }} showsVerticalScrollIndicator={false}>
             <View style={{ 
                 width: "100%", 
                 alignItems: "center",
+                justifyContent: "center",
                 backgroundColor: "#ffffff",
                 borderRadius: 24,
+                bottom: 0,
             }}>
                 <TouchableOpacity onPress={onClosePress} style={{
                     position: "absolute",
-                    top: -8,
-                    left: -4
+                    top: 0,
+                    left: 0
                 }}>
                     <Text style={{ fontSize: 24, color: "#15803d" }}>
                         ←
@@ -100,7 +102,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingVertical: 12
+                        paddingTop: 12
                     }}>
                         <Text style={{ 
                             fontSize: 18, 
@@ -124,7 +126,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                                     fontSize: 16,
                                     color: "#374151",
                                     fontWeight: "500",
-                                    paddingVertical: 4
+                                    paddingTop: 4
                                 }}
                                 placeholder={emailFocused || email ? "" : "your email"}
                                 placeholderTextColor="#9ca3af"
@@ -153,7 +155,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingVertical: 12
+                        paddingTop: 12
                     }}>
                         <Text style={{ 
                             fontSize: 18, 
@@ -177,7 +179,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                                     fontSize: 16,
                                     color: "#374151",
                                     fontWeight: "500",
-                                    paddingVertical: 4
+                                    paddingTop: 4
                                 }}
                                 placeholder={usernameFocused || username ? "" : "choose username"}
                                 placeholderTextColor="#9ca3af"
@@ -258,7 +260,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingVertical: 12
+                        paddingTop: 12
                     }}>
                         <Text style={{ 
                             fontSize: 18, 
@@ -309,7 +311,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                         width: "100%",
                         backgroundColor: loading ? "#9ca3af" : "#15803d",
                         borderRadius: 25,
-                        paddingVertical: 18,
+                        paddingVertical: 12,
                         alignItems: "center",
                         marginBottom: 24,
                         shadowColor: "#15803d",
@@ -335,7 +337,7 @@ export default function SignUp({ onLoginPress, onClose, onShowVerify }) {
                     flexDirection: "row", 
                     justifyContent: "center", 
                     alignItems: "center",
-                    marginBottom: 16
+                    marginBottom: 0
                 }}>
                     <Text style={{
                         color: "#6b7280",

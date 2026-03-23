@@ -7,19 +7,18 @@ export function AuthProvider({ children }) {
     const [authUser, setAuthUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    // On mount, restore session from storage
     useEffect(() => {
         const checkToken = async () => {
             try {
                 const token = await AsyncStorage.getItem('access');
                 if (token) {
                     setAuthUser({ token });
-                    console.log("Token found, user authenticated");
                 } else {
-                    console.log("No token found, user not authenticated");
                     setAuthUser(null);
                 }
             } catch (error) {
-                console.error("Error checking token:", error);
+                console.error('Error checking token:', error);
                 setAuthUser(null);
             } finally {
                 setIsLoading(false);
@@ -28,9 +27,23 @@ export function AuthProvider({ children }) {
         checkToken();
     }, []);
 
-    const login = (userData) => setAuthUser(userData);
+    // FIX: previously login() only updated state but never wrote the token to
+    // AsyncStorage, so the session was lost on app restart.
+    const login = async (userData) => {
+        try {
+            await AsyncStorage.setItem('access', userData.token);
+        } catch (e) {
+            console.error('Error saving token:', e);
+        }
+        setAuthUser(userData);
+    };
+
     const logout = async () => {
-        await AsyncStorage.removeItem('access');
+        try {
+            await AsyncStorage.removeItem('access');
+        } catch (e) {
+            console.error('Error removing token:', e);
+        }
         setAuthUser(null);
     };
 
@@ -43,8 +56,6 @@ export function AuthProvider({ children }) {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within AuthProvider');
-    }
+    if (!context) throw new Error('useAuth must be used within AuthProvider');
     return context;
 };

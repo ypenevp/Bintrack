@@ -73,12 +73,11 @@ export default function Map({ navigation }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <TopNav navigation={navigation} />
+            {/* <TopNav navigation={navigation} /> */}
 
             <ScrollView 
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 64 }}
-                // Prevent the outer scroll from stealing touches from WebViews
+                contentContainerStyle={{ paddingBottom: 0 }}
                 nestedScrollEnabled
             >
                 {/* ── Map ───────────────────────────────── */}
@@ -86,10 +85,14 @@ export default function Map({ navigation }) {
                 <View style={{
                     marginHorizontal: PAD,
                     borderRadius: 14,
-                    overflow: 'hidden',
-                    borderWidth: 4,
-                    borderColor: '#4CAF50',
-                    height: 480,
+                    overflow: 'show',
+                    border: 0,
+                    height: 540,
+                    shadowColor: '#15803d',
+                    shadowOpacity: 1,
+                    shadowRadius: 14,
+                    elevation: 12,
+                    marginTop: 16,
                 }}>
                     <WebView
                         originWhitelist={['*']}
@@ -103,7 +106,6 @@ export default function Map({ navigation }) {
                     />
                 </View>  
             </ScrollView>
-            <BottomNav navigation={navigation} />
         </View>
     );
 }

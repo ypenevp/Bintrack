@@ -248,7 +248,7 @@ export default function Stats({ navigation }) {
     }));
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <TopNav navigation={navigation} />
+            {/* <TopNav navigation={navigation} /> */}
             <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' }}>
 
             </View>
@@ -359,7 +359,7 @@ export default function Stats({ navigation }) {
                     />
                 </View>
             </ScrollView>
-            <BottomNav navigation={navigation} />
+            {/* <BottomNav navigation={navigation} /> */}
         </View>
     );
 }

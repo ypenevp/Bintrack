@@ -352,7 +352,7 @@ export default function Settings({ navigation }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>
-            <TopNav navigation={navigation} />
+            {/* <TopNav navigation={navigation} /> */}
 
             <ScrollView
                 scrollEnabled={!languageDropdownOpen}
@@ -584,7 +584,7 @@ export default function Settings({ navigation }) {
                 onClose={() => setShowPersonalInfo(false)}
             />
 
-            <BottomNav navigation={navigation} />
+            {/* <BottomNav navigation={navigation} /> */}
         </View>
     );
 }
