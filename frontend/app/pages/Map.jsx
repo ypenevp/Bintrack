@@ -75,7 +75,7 @@ export default function Map({ navigation }) {
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
             {/* <TopNav navigation={navigation} /> */}
 
-            <ScrollView 
+            <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 0 }}
                 nestedScrollEnabled
@@ -84,27 +84,29 @@ export default function Map({ navigation }) {
                 <SectionTitle title="Dumpster Locations" />
                 <View style={{
                     marginHorizontal: PAD,
-                    borderRadius: 14,
-                    overflow: 'show',
-                    border: 0,
-                    height: 540,
                     shadowColor: '#15803d',
-                    shadowOpacity: 1,
+                    shadowOpacity: 0.8,
                     shadowRadius: 14,
-                    elevation: 12,
-                    marginTop: 16,
+                    elevation: 18,
                 }}>
-                    <WebView
-                        originWhitelist={['*']}
-                        source={{ html: mapHtml }}
-                        style={{ flex: 1 }}
-                        scrollEnabled={false}
-                        onMessage={(event) => {
-                            const data = JSON.parse(event.nativeEvent.data);
-                            console.log('Marker clicked:', data);
-                        }}
-                    />
-                </View>  
+                    <View style={{
+                        borderRadius: 14,
+                        overflow: 'hidden',
+                        height: 540,
+                        backgroundColor: '#fff',
+                    }}>
+                        <WebView
+                            originWhitelist={['*']}
+                            source={{ html: mapHtml }}
+                            style={{ flex: 1 }}
+                            scrollEnabled={false}
+                            onMessage={(event) => {
+                                const data = JSON.parse(event.nativeEvent.data);
+                                console.log('Marker clicked:', data);
+                            }}
+                        />
+                    </View>
+                </View>
             </ScrollView>
         </View>
     );

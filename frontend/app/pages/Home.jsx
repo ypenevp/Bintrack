@@ -128,8 +128,8 @@ export default function Home({ navigation }) {
                             textShadowOffset: { width: 0, height: 2 },
                             textShadowRadius: 4
                         }}>
-                            Bin
-                            <Text style={{ color: '#4ade80' }}>Track</Text>
+                            Junk
+                            <Text style={{ color: '#4ade80' }}>Buddy</Text>
                         </Text>
 
                         <Text style={{
