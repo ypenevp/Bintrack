@@ -1,6 +1,7 @@
 package com.legends.backend.services;
 
 import com.legends.backend.entities.Device;
+import com.legends.backend.exeptions.ResourceNotFoundException;
 import com.legends.backend.repositories.DeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,9 @@ public class DeviceService {
     }
 
     public Device getDevice(Long id){
-        Optional<Device> deviceToGet = deviceRepository.findById(id);
-
-        if(deviceToGet.isEmpty()){
-            return null;
-        }
-
-        return deviceToGet.get();
+        return deviceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Device with ID " + id + " not found!!"));
     }
-
     public List<Device> getAllDevices(){
         return this.deviceRepository.findAll();
     }

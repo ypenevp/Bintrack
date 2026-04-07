@@ -1,38 +1,36 @@
-/*package com.legends.backend.exeptions;
-
-import com.legends.backend.services.AuthService;
+package com.legends.backend.exeptions;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AuthService.VerificationCodeExpiredException.class)
-    public ResponseEntity<String> handleVerificationCodeExpired(AuthService.VerificationCodeExpiredException ex) {
-        return ResponseEntity
-                .status(400)
-                .body(ex.getMessage());
+    // 404 not found
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(404, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(AuthService.NotFoundException.class)
-    public ResponseEntity<String> handleNotFound(AuthService.NotFoundException ex) {
-        return ResponseEntity
-                .status(404)
-                .body(ex.getMessage());
+    // 400 bad request
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        StringBuilder errors = new StringBuilder();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            errors.append(error.getDefaultMessage()).append("; ");
+        });
+
+        ErrorResponse errorResponse = new ErrorResponse(400, "Bad request: " + errors.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler(AuthService.EmailNotVerifiedException.class)
-    public ResponseEntity<String> handleEmailNotVerifiedException(AuthService.VerificationCodeExpiredException ex) {
-        return ResponseEntity
-                .status(403)
-                .body(ex.getMessage());
+    // 500 - other errors
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
+        ErrorResponse error = new ErrorResponse(500, "An unexpected error occurred.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
-
-    @ExceptionHandler(AuthService.BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentialsException(AuthService.VerificationCodeExpiredException ex) {
-        return ResponseEntity
-                .status(401)
-                .body(ex.getMessage());
-    }
-}*/
+}
