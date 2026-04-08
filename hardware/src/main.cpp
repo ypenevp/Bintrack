@@ -293,7 +293,7 @@ void loop()
     payload += "}";
     http.begin(POSTserverURL);
     http.addHeader("Content-Type", "application/json");
-    int responseCode = http.POST(payload);
+    int responseCode = http.PATCH(payload);
 
     if (responseCode > 0)
     {
