@@ -47,8 +47,15 @@ public class SensorDataController {
     }
 
     @PatchMapping("/update/{id}")
-    public SensorData updateSensorDataController(@PathVariable Long id, @RequestBody SensorData sensorData){
+    public ResponseEntity<?> updateSensorDataController(@PathVariable Long id, @RequestBody SensorData sensorData){
+        Device device = deviceService.authenticateDevice(sensorData.getDeviceToken());
+
+        if(device == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         sensorData.setId(id);
-        return this.sensorDataService.updateSensorData(sensorData);
+        SensorData saved = this.sensorDataService.updateSensorData(sensorData);
+        return ResponseEntity.ok(saved);
     }
 }

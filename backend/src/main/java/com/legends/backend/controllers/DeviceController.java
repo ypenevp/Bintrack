@@ -31,7 +31,7 @@ public class DeviceController {
         return this.deviceService.addDevice(device);
     }
 
-    @PatchMapping("/update/{deviceId}")
+    @PatchMapping("/update/{id}")
     public Device updateDeviceController(@PathVariable Long id, @RequestBody Device device) {
         device.setId(id);
         return this.deviceService.updateDevice(device);
