@@ -1,8 +1,7 @@
 package com.legends.backend.entities;
 
 public enum STATUS {
-    FULL,
+    EMPTY,
     MEDIUM,
-    LOW,
-    EMPTY
+    FULL
 }
