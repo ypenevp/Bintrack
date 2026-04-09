@@ -45,6 +45,18 @@ Base URL: `http://localhost:7070/api`
 
 ---
 
+## Updates
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST`   | `/updates/createupdate` | Add a update with GPS coordinates and speed. |
+| `GET`    | `/updates/getall` | Get all update from DB. |
+| `GET`    | `/updates/getupdate/{id}` | Get a single update by ID. |
+| `PATCH`  | `/updates/updateupdate/{id}` | Update update parameters. |
+| `DELETE` | `/updates/deleteupdate/{id}` | Delete a updates by ID. |
+
+---
+
 ### Authentication
 
 | Method | Endpoint | Description |
@@ -57,10 +69,26 @@ Base URL: `http://localhost:7070/api`
 
 ---
 
+### Admin
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `PATCH` | `/admin/users/role` | Update user's role . |
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
+| **Firmware** | C++ (Arduino framework), ESP32 S3 |
+| **Sensors** | NEO-6M GPS, SIM800L GSM, MPU6050, VL53L0X |
+| **Display** | SSD1306 OLED display |
+| **Backend** | Spring Boot |
+| **Database** | PostgreSQL |
+| **Authentication** | JWT |
+| **Frontend** | React Native (Expo) |
+| **Build tools** | Maven, PlatformIO |
 
 ---
 
@@ -79,3 +107,5 @@ Base URL: `http://localhost:7070/api`
 - 
 
 ---
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
