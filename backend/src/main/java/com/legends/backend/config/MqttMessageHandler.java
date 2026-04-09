@@ -31,7 +31,7 @@ public class MqttMessageHandler {
             if (parts.length >= 4) {
                 STATUS status = STATUS.valueOf(parts[0].trim().toUpperCase());
                 String registeredLocation = parts[1].trim();
-                String coordinates = parts[2].trim();
+                String coordinates = parts[2].trim() + "," + parts[3].trim();
 
                 binService.saveOrUpdateSensorData(binId, status, registeredLocation, coordinates);
             } else if (parts.length == 3) {
