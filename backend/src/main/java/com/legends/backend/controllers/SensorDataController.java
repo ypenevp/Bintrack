@@ -7,6 +7,8 @@ import com.legends.backend.services.SensorDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -24,13 +26,21 @@ public class SensorDataController {
     }
 
     @GetMapping("/get/{id}")
-    public SensorData getSensorDataController(@PathVariable Long id){
-        return this.sensorDataService.getSensorData(id);
+    public ResponseEntity<SensorData> getSensorDataController(@PathVariable Long id){
+        SensorData sensorData = this.sensorDataService.getSensorData(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(sensorData);
     }
 
     @GetMapping("/getAll")
-    public List<SensorData> getAllSensorDataController(){
-        return this.sensorDataService.getAllSensorData();
+    public ResponseEntity<List<SensorData>> getAllSensorDataController(){
+        List<SensorData> sensorDataList = this.sensorDataService.getAllSensorData();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(sensorDataList);
     }
 
     @PostMapping("/add")
@@ -38,12 +48,17 @@ public class SensorDataController {
         Device device = deviceService.authenticateDevice(sensorData.getDeviceToken());
 
         if(device == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
         }
 
         sensorData.setDeviceID(device.getId());
         SensorData saved = sensorDataService.addSensorData(sensorData);
-        return ResponseEntity.ok(saved);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(saved);
     }
 
     @PatchMapping("/update/{id}")
@@ -51,11 +66,16 @@ public class SensorDataController {
         Device device = deviceService.authenticateDevice(sensorData.getDeviceToken());
 
         if(device == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
         }
 
         sensorData.setId(id);
         SensorData saved = this.sensorDataService.updateSensorData(sensorData);
-        return ResponseEntity.ok(saved);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(saved);
     }
 }

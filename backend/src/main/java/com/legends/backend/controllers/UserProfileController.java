@@ -15,6 +15,8 @@ import com.legends.backend.services.AuthService;
 import com.legends.backend.services.CloudinaryService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.legends.backend.services.UserProfileService;
 
@@ -38,7 +40,7 @@ public class UserProfileController {
     }
 
     @PostMapping("/createuserprofile")
-    public UserProfile createUserProfile(
+    public ResponseEntity<UserProfile> createUserProfile(
             @ModelAttribute UserProfileCreateRequest data,
             HttpServletRequest request
     ) throws IOException {
@@ -55,15 +57,17 @@ public class UserProfileController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserProfile userProfile= new UserProfile();
+        UserProfile userProfile = new UserProfile();
         userProfile.setAddress(data.getAddress());
-        if(user.getRole() == ROLE.USER && data.getTelephone() != null) {
+
+        if (user.getRole() == ROLE.USER && data.getTelephone() != null) {
             throw new RuntimeException("Users cannot set telephone number");
         }
 
-        if(user.getRole() == ROLE.ADMIN || user.getRole() == ROLE.WORKER) {
+        if (user.getRole() == ROLE.ADMIN || user.getRole() == ROLE.WORKER) {
             userProfile.setTelephone(data.getTelephone());
         }
+
         userProfile.setTheme(THEME.LIGHT);
         userProfile.setUser(user);
 
@@ -74,22 +78,41 @@ public class UserProfileController {
         String pictureUrl = (String) uploadImage.get("secure_url");
         userProfile.setPhoto(pictureUrl);
 
-        return userProfileService.addUserProfile(userProfile);
+        UserProfile created = userProfileService.addUserProfile(userProfile);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(created);
     }
 
     @GetMapping("/getuserprofile/{id}")
-    public UserProfile getNews(@PathVariable Long id) {
-        return this.userProfileService.getUserProfile(id);
+    public ResponseEntity<UserProfile> getUserProfile(@PathVariable Long id) {
+        UserProfile profile = this.userProfileService.getUserProfile(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(profile);
     }
 
     @PatchMapping("/updateuserprofile/{id}")
-    public UserProfile updateUserProfile(@PathVariable Long id, @RequestBody UserProfile userProfile) {
+    public ResponseEntity<UserProfile> updateUserProfile(
+            @PathVariable Long id,
+            @RequestBody UserProfile userProfile
+    ) {
         userProfile.setId(id);
-        return this.userProfileService.updateUserProfile(userProfile);
+        UserProfile updated = this.userProfileService.updateUserProfile(userProfile);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updated);
     }
 
     @DeleteMapping("/deleteuserprofile/{id}")
-    public void deleteUserProfile(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUserProfile(@PathVariable Long id) {
         this.userProfileService.deleteUserProfile(id);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

@@ -4,6 +4,8 @@ package com.legends.backend.controllers;
 import com.legends.backend.entities.Device;
 import com.legends.backend.services.DeviceService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -17,29 +19,44 @@ public class DeviceController {
     }
 
     @GetMapping("/get/{id}")
-    public Device getDeviceController(@PathVariable Long id){
-        return this.deviceService.getDevice(id);
+    public ResponseEntity<Device> getDeviceController(@PathVariable Long id) {
+        Device device = this.deviceService.getDevice(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(device);
     }
 
     @GetMapping("/getAll")
-    public List<Device> getAllDevicesController(){
-        return this.deviceService.getAllDevices();
+    public ResponseEntity<List<Device>> getAllDevicesController() {
+        List<Device> devices = this.deviceService.getAllDevices();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(devices);
     }
 
     @PostMapping("/add")
-    public Device addDeviceController(@RequestBody Device device) {
-        return this.deviceService.addDevice(device);
+    public ResponseEntity<Device> addDeviceController(@RequestBody Device device) {
+        Device newDevice = this.deviceService.addDevice(device);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(newDevice);
     }
 
     @PatchMapping("/update/{id}")
-    public Device updateDeviceController(@PathVariable Long id, @RequestBody Device device) {
+    public ResponseEntity<Device> updateDeviceController(@PathVariable Long id, @RequestBody Device device) {
         device.setId(id);
-        return this.deviceService.updateDevice(device);
+        Device updatedDevice = this.deviceService.updateDevice(device);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedDevice);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteDeviceController(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDeviceController(@PathVariable Long id) {
         this.deviceService.deleteDevice(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 }
