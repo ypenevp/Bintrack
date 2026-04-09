@@ -4,6 +4,7 @@ import com.legends.backend.entities.STATUS;
 import com.legends.backend.services.BinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,41 @@ public class MqttMessageHandler {
     public void handleMessage(Message<?> message) {
 
         String payload = message.getPayload().toString().trim();
+        String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC, String.class);
 
-        System.out.println("RAW PAYLOAD: [" + payload + "]");
+        System.out.println("RAW PAYLOAD: [" + payload + "] FROM TOPIC: [" + topic + "]");
 
         try {
+            String[] topicParts = topic.split("/");
+            Long binId = Long.parseLong(topicParts[topicParts.length - 1]);
+
             String[] parts = payload.split(",");
 
-            if (parts.length >= 3) {
+            if (parts.length >= 4) {
+                STATUS status = STATUS.valueOf(parts[0].trim().toUpperCase());
+                String registeredLocation = parts[1].trim();
+                Double latitude = Double.parseDouble(parts[2].trim());
+                Double longitude = Double.parseDouble(parts[3].trim());
+
+                binService.saveOrUpdateSensorData(binId, status, registeredLocation, longitude, latitude);
+            } else if (parts.length == 3) {
                 STATUS status = STATUS.valueOf(parts[0].trim().toUpperCase());
                 String registeredLocation = parts[1].trim();
                 String coordinates = parts[2].trim();
-
-                binService.saveOrUpdateSensorData(status, registeredLocation, coordinates);
+                String[] coords = coordinates.split(" ");
+                if (coords.length >= 2) {
+                    Double lat = Double.parseDouble(coords[0].trim());
+                    Double lon = Double.parseDouble(coords[1].trim());
+                    binService.saveOrUpdateSensorData(binId, status, registeredLocation, lon, lat);
+                } else {
+                    System.out.println("Not enough data coordinates: " + coordinates);
+                }
             } else {
                 System.out.println("Not enough data: " + payload);
             }
 
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid STATUS value in payload: " + payload);
+            System.out.println("Invalid payload or topic: " + payload);
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error with parsing: " + payload);

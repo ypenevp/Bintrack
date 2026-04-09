@@ -16,15 +16,18 @@ public class BinService {
     private final MqttGateway mqttGateway;
 
     @Transactional
-    public synchronized void saveOrUpdateSensorData(STATUS status, String registeredLocation, String coordinates) {
-        Bin bin = binRepository.findTopByOrderByIdAsc()
-                .orElseGet(Bin::new); 
+    public synchronized void saveOrUpdateSensorData(Long id, STATUS status, String registeredLocation, Double longitude, Double latitude) {
+        Bin bin = binRepository.findById(id)
+                .orElseGet(() -> {
+                    Bin newBin = new Bin();
+                    return newBin;
+                });
 
         bin.setStatus(status);
         bin.setRegisteredLocation(registeredLocation);
-        bin.setCoordinates(coordinates);
+        bin.setLongitude(longitude);
+        bin.setLatitude(latitude);
 
         binRepository.save(bin);
     }
 }
-

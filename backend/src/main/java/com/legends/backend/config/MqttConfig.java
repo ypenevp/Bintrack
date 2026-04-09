@@ -36,7 +36,7 @@ public class MqttConfig {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter("serverClientInbound", mqttClientFactory(), "esp32/sensor");
+                new MqttPahoMessageDrivenChannelAdapter("serverClientInbound", mqttClientFactory(), "esp32/sensor/+");
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
