@@ -13,6 +13,9 @@ import com.legends.backend.security.JwtService;
 import com.legends.backend.services.AuthService;
 import com.legends.backend.services.CloudinaryService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +41,7 @@ public class UpdatesController {
     }
 
     @PostMapping("/createupdate")
-    public Updates createUpdates(
+    public ResponseEntity<Updates> createUpdates(
             @ModelAttribute UpdatesCreateRequest data,
             HttpServletRequest request
     ) throws IOException {
@@ -67,28 +70,43 @@ public class UpdatesController {
         String pictureUrl = (String) uploadImage.get("secure_url");
         updates.setPicture(pictureUrl);
 
-        return updatesService.addUpdates(updates);
+        Updates created = updatesService.addUpdates(updates);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(created);
     }
 
-
     @GetMapping("/getall")
-    public List<Updates> getAllUpdates() {
-        return this.updatesService.getAllUpdates();
+    public ResponseEntity<List<Updates>> getAllUpdates() {
+        List<Updates> updates = this.updatesService.getAllUpdates();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updates);
     }
 
     @GetMapping("/getupdate/{id}")
-    public Updates getNews(@PathVariable Long id) {
-        return this.updatesService.getUpdates(id);
+    public ResponseEntity<Updates> getNews(@PathVariable Long id) {
+        Updates updates = this.updatesService.getUpdates(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updates);
     }
 
     @PatchMapping("/updateupdate/{id}")
-    public Updates updateUpdates(@PathVariable Long id, @RequestBody Updates updates) {
+    public ResponseEntity<Updates> updateUpdates(@PathVariable Long id, @RequestBody Updates updates) {
         updates.setId(id);
-        return this.updatesService.updateUpdates(updates);
+        Updates updated = this.updatesService.updateUpdates(updates);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updated);
     }
 
     @DeleteMapping("/deleteupdate/{id}")
-    public void deleteUpdates(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUpdates(@PathVariable Long id) {
         this.updatesService.deleteUpdates(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }
