@@ -31,10 +31,9 @@ public class MqttMessageHandler {
             if (parts.length >= 4) {
                 STATUS status = STATUS.valueOf(parts[0].trim().toUpperCase());
                 String registeredLocation = parts[1].trim();
-                Double latitude = Double.parseDouble(parts[2].trim());
-                Double longitude = Double.parseDouble(parts[3].trim());
+                String coordinates = parts[2].trim();
 
-                binService.saveOrUpdateSensorData(binId, status, registeredLocation, longitude, latitude);
+                binService.saveOrUpdateSensorData(binId, status, registeredLocation, coordinates);
             } else if (parts.length == 3) {
                 STATUS status = STATUS.valueOf(parts[0].trim().toUpperCase());
                 String registeredLocation = parts[1].trim();
@@ -43,7 +42,7 @@ public class MqttMessageHandler {
                 if (coords.length >= 2) {
                     Double lat = Double.parseDouble(coords[0].trim());
                     Double lon = Double.parseDouble(coords[1].trim());
-                    binService.saveOrUpdateSensorData(binId, status, registeredLocation, lon, lat);
+                    binService.saveOrUpdateSensorData(binId, status, registeredLocation, coordinates);
                 } else {
                     System.out.println("Not enough data coordinates: " + coordinates);
                 }
