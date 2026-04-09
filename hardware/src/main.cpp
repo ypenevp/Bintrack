@@ -121,6 +121,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <PubSubClient.h>
 #include "secrets.h"
 
 #define TRIG 12
@@ -145,8 +146,73 @@ String status;
 
 const char *ssid = NETWORK_NAME;
 const char *password = NETWORK_PASSWORD;
-const char *POSTserverURL = BACKEND_URL;
-const char *deviceToken = DEVICE_TOKEN;
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
+void setupWiFi() 
+{
+    delay(10);
+    Serial.println();
+    Serial.print("Connecting to WiFi: ");
+    Serial.println(ssid);
+
+    WiFi.begin(ssid, password);
+
+    while (WiFi.status() != WL_CONNECTED) 
+    {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+}
+
+void reconnectMqtt() 
+{
+
+    while (!mqttClient.connected()) 
+    {
+        Serial.print("Attempting MQTT connection...");
+
+        if (mqttClient.connect(MQTT_CLIENT_ID)) 
+        {
+            Serial.println("connected to MQTT broker!");
+        } 
+
+        else 
+        {
+            Serial.print("failed, rc=");
+            Serial.print(mqttClient.state());
+            Serial.println(" try again in 5 seconds");
+            delay(5000);
+        }
+
+    }
+}
+
+void publishTelemetry() {
+    String registeredLocation = "Drujba";
+    String coordinateStr = "42.23";
+
+    String payload = status + "," + registeredLocation + "," + coordinateStr;
+
+    String topic = String("esp32/sensor");
+
+    if(mqttClient.publish(topic.c_str(), payload.c_str())) 
+    {
+        Serial.println("Published to " + topic + ": " + payload);
+    } 
+
+    else 
+    {
+        Serial.println("Failed to publish telemetry :(");
+    }
+
+}
 
 void setup() 
 {
@@ -173,6 +239,8 @@ void setup()
 
   Serial.println();
   Serial.println("Connected to WiFi!");
+
+  mqttClient.setServer(MQTT_BROKER_IP, MQTT_PORT);
 }
 
 void lightIndication(float distance) 
@@ -267,7 +335,7 @@ void loop()
     status = "EMPTY";
   }
 
-  else if(fillPercentage < 30)
+  else if(fillPercentage > 0 && fillPercentage < 30)
   {
     status = "LOW";
   }
@@ -282,29 +350,14 @@ void loop()
     status = "FULL";
   }
 
-  if(WiFi.status() == WL_CONNECTED)
-  {
-    HTTPClient http;
-    String payload = "{";
-    payload += "\"deviceToken\": \"" + String(deviceToken) + "\",";
-    payload += "\"location\": \"42.123456,23.456789\",";
-    payload += "\"fillPercentage\": " + String(fillPercentage) + ",";
-    payload += "\"status\": \"" + status + "\"";
-    payload += "}";
-    http.begin(POSTserverURL);
-    http.addHeader("Content-Type", "application/json");
-    int responseCode = http.PATCH(payload);
-
-    if (responseCode > 0)
-    {
-      Serial.printf("Data sent at whole minute. HTTP %d\n", responseCode);
+  if (WiFi.status() == WL_CONNECTED) {
+    if (!mqttClient.connected()) {
+      reconnectMqtt();
     }
-    else
-    {
-      Serial.printf("HTTP error: %s\n", http.errorToString(responseCode).c_str());
-    }
-    http.end();
+    mqttClient.loop();
   }
 
+  publishTelemetry();
+  
   delay(500);
 }
