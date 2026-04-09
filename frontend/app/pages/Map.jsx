@@ -27,7 +27,7 @@ export default function MapScreen() {
         const decoded = jwtDecode(token);
         const role = decoded.role;
 
-        const response = await fetch('http://192.168.1.112:7070/api/bins/get/all', {
+        const response = await fetch(`${API_URL}/api/bins/get/all`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
