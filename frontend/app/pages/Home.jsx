@@ -1,8 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView, Modal, ImageBackground, Image } from 'react-native';
 import "../global.css";
-import { useNavigation } from '@react-navigation/native';
-import BottomNav from '../components/bottomNav.jsx';
-import TopNav from '../components/topNav.jsx';
 import { useState, useEffect } from 'react';
 import Login from '../components/logIn.jsx';
 import SignUp from '../components/signUp.jsx';
@@ -128,8 +125,8 @@ export default function Home({ navigation }) {
                             textShadowOffset: { width: 0, height: 2 },
                             textShadowRadius: 4
                         }}>
-                            Junk
-                            <Text style={{ color: '#4ade80' }}>Buddy</Text>
+                            Bin
+                            <Text style={{ color: '#4ade80' }}>Track</Text>
                         </Text>
 
                         <Text style={{
@@ -335,8 +332,8 @@ export default function Home({ navigation }) {
                                             <Image
                                                 source={
                                                     item.picture
-                                                        ? { uri: item.picture } 
-                                                        : item.imageSource     
+                                                        ? { uri: item.picture }
+                                                        : item.imageSource
                                                 }
                                                 style={{
                                                     width: '100%',

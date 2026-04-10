@@ -27,16 +27,19 @@ public class UpdatesService {
         }
         return updatesToGet.get();
     }
-    public Updates updateUpdates(Updates updates){
+    public Updates updateUpdates(Updates updates) {
         Updates updatesToUpdate = this.getUpdates(updates.getId());
-        if(updatesToUpdate == null){
+        if (updatesToUpdate == null) {
             return null;
         }
-        if(updates.getTitle() != null){
+        if (updates.getTitle() != null) {
             updatesToUpdate.setTitle(updates.getTitle());
         }
-        if(updates.getArticle() != null){
+        if (updates.getArticle() != null) {
             updatesToUpdate.setArticle(updates.getArticle());
+        }
+        if (updates.getPicture() != null) {
+            updatesToUpdate.setPicture(updates.getPicture());
         }
         return this.updatesRepository.save(updatesToUpdate);
     }
