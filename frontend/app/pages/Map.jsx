@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import * as Location from 'expo-location';
+import { API_URL } from '@env';
 
 const PAD = 16;
 const COLORS = ['#4CAF50', '#2196F3', '#FF5722', '#9C27B0', '#FFC107'];

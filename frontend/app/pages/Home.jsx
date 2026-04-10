@@ -164,14 +164,12 @@ export default function Home({ navigation }) {
                                     textShadowColor: 'rgba(0, 0, 0, 0.3)',
                                     textShadowOffset: { width: 0, height: 1 },
                                     textShadowRadius: 2
-                                }}>2</Text>
+                                }}>4</Text>
                                 <Text style={{
                                     fontSize: 14,
                                     color: '#e2e8f0',
                                     textAlign: 'center'
                                 }}>Smart Bins</Text>
-
-                                <Text style={{ fontSize: 5, color: '#e2e8f0' }}>*one got incinerated by a soldering iron thanks to our expert backend team</Text>
 
                             </View>
                             <View style={{ alignItems: 'center', flex: 1 }}>
@@ -289,23 +287,23 @@ export default function Home({ navigation }) {
                                 <TouchableOpacity
                                     key={item.id || index}
                                     style={{ alignItems: 'center' }}
-                                    onPress={() => {
-                                        if (updates.length > 0) {
-                                            navigation.navigate('Update', {
-                                                updateId: item.id,
-                                                updateData: item
-                                            });
-                                        } else {
-                                            navigation.navigate('Update', {
-                                                updateId: index + 1,
-                                                updateData: {
-                                                    ...item,
-                                                    id: index + 1,
-                                                    article: item.title
-                                                }
-                                            });
-                                        }
-                                    }}
+                                    // onPress={() => {
+                                    //     if (updates.length > 0) {
+                                    //         navigation.navigate('Update', {
+                                    //             updateId: item.id,
+                                    //             updateData: item
+                                    //         });
+                                    //     } else {
+                                    //         navigation.navigate('Update', {
+                                    //             updateId: index + 1,
+                                    //             updateData: {
+                                    //                 ...item,
+                                    //                 id: index + 1,
+                                    //                 article: item.title
+                                    //             }
+                                    //         });
+                                    //     }
+                                    // }}
                                     activeOpacity={0.8}
                                 >
                                     <View style={{

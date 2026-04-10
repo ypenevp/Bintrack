@@ -8,6 +8,8 @@ export const handleSignUp = async ({ username, password, email }) => {
     try {
         console.log("API URL:", API_URL);
 
+        console.log("Signup data:", { username, email });
+
         const response = await fetch(`${API_URL}/api/auth/register`, {
             method: "POST",
             headers: {
@@ -15,6 +17,7 @@ export const handleSignUp = async ({ username, password, email }) => {
             },
             body: JSON.stringify({ username, password, email }),
         });
+
         const responseText = await response.text();
         console.log("Signup raw response:", responseText);
 
@@ -22,7 +25,7 @@ export const handleSignUp = async ({ username, password, email }) => {
         if (responseText) {
             try {
                 data = JSON.parse(responseText);
-            } catch (parseError) {
+            } catch {
                 data = {};
             }
         }
@@ -35,7 +38,7 @@ export const handleSignUp = async ({ username, password, email }) => {
         } else {
             return {
                 ok: false,
-                data: data.detail ? data : { detail: "Registration failed" }
+                data: { detail: data.message || data.detail || "Registration failed." }
             };
         }
 

@@ -68,7 +68,6 @@ export default function FormUpdates({ navigation }) {
 
     return (
         <View style={{ flex: 1, width: "100%" }}>
-            <TopNav navigation={navigation} />
             {userRole == "ADMIN" ? (
                 <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }} contentContainerStyle={{ alignItems: "center", justifyContent: "center", paddingVertical: 20 }}>
                     <View style={{
@@ -242,7 +241,6 @@ export default function FormUpdates({ navigation }) {
                 </View>
             )}
 
-            <BottomNav navigation={navigation} />
         </View>
     );
 }

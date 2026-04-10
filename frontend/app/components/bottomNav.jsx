@@ -6,7 +6,6 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 const TABS = [
     { name: 'Map',      route: 'Map',      icon: 'map-marker-alt',   lib: 'fontisto' },
     { name: 'Stats',    route: 'Stats',    icon: 'monitor-dashboard', lib: 'material' },
-    { name: 'Settings', route: 'Settings', icon: 'spinner-cog',       lib: 'fontisto' },
 ];
 
 const GREEN      = '#15803d';

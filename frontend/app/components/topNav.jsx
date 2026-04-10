@@ -9,7 +9,7 @@ import { useUser } from '../../context/UserContext.jsx';
 import { useUI  } from '../../context/UiContext.jsx';
 
 const TopNav = ({ navigation, currentRoute }) => {
-    const { user: authUser, isLoading: authLoading } = useAuth();
+    const { user: authUser, isLoading: authLoading, logout } = useAuth();
     const { user: userDetails } = useUser();
     const { openLogin, openSignup } = useUI();
     const isLoggedIn = !!authUser;
@@ -18,10 +18,14 @@ const TopNav = ({ navigation, currentRoute }) => {
         { name: 'Home',     route: 'Home' },
         { name: 'Map',      route: 'Map' },
         { name: 'Stats',    route: 'Stats' },
-        { name: 'Settings', route: 'Settings' },
         { name: 'Updates',  route: 'Updates', adminOnly: true },
         { name: 'Users',    route: 'Users',   adminOnly: true },
     ];
+
+    const handleSignOut = async () => {
+        await logout();
+        navigation.navigate('Home');
+    };
 
     const isHome = currentRoute === 'Home';
 
@@ -120,7 +124,7 @@ const TopNav = ({ navigation, currentRoute }) => {
                 </TouchableOpacity>
 
                 {/* Login / Sign-up */}
-                {!isLoggedIn && !authLoading && (
+                {!isLoggedIn && !authLoading ? (
                     <View style={{
                         flexDirection: 'row',
                         backgroundColor: '#f8f9fa',
@@ -128,6 +132,8 @@ const TopNav = ({ navigation, currentRoute }) => {
                         overflow: 'hidden',
                         borderWidth: 2,
                         borderColor: '#15803d',
+                        marginLeft: 40,
+                        marginBottom: 4,
                     }}>
                         <TouchableOpacity
                             onPress={openLogin}
@@ -142,6 +148,21 @@ const TopNav = ({ navigation, currentRoute }) => {
                             <Text style={{ fontSize: 14, fontWeight: '600', color: '#fff' }}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
+                ):(
+                    <TouchableOpacity
+                        onPress={handleSignOut}
+                        style={{
+                            paddingHorizontal: 12, paddingVertical: 6,
+                            backgroundColor: '#e92f2f',
+                            borderRadius: 15,
+                            borderWidth: 2,
+                            borderColor: '#b91c1c',
+                            marginLeft: 90,
+                            marginBottom: 4,
+                        }}
+                    >
+                        <Text style={{ fontSize: 14, fontWeight: '600', color: '#fff' }}>Sign Out</Text>
+                    </TouchableOpacity>
                 )}
 
                 <Pressable onPress={togglePanel} style={{ paddingHorizontal: 12, marginRight: 4 }}>

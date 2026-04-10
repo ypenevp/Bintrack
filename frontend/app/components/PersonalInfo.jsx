@@ -184,8 +184,8 @@ export default function PersonalInfoModal({ visible, onClose }) {
                             label="Full Name"
                         />
                         <View style={{ flexDirection: 'row', gap: 10 }}>
-                            <Field label="First name" defaultValue={userDetails?.firstName || 'Borislav'} />
-                            <Field label="Last name" defaultValue={userDetails?.lastName || 'Stoinev'} />
+                            <Field label="First name" defaultValue={userDetails?.firstName } />
+                            <Field label="Last name" defaultValue={userDetails?.lastName } />
                         </View>
 
                         {/* Email */}
@@ -195,7 +195,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
                         />
                         <View>
                             <TextInput
-                                defaultValue={userDetails?.email || 'borislav@example.com'}
+                                defaultValue={userDetails?.email}
                                 style={{
                                     backgroundColor: '#f4f5f7',
                                     borderRadius: 10,
@@ -244,7 +244,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
                             >
                                 <Text style={{ fontSize: 13, color: '#6b7280' }}>🇧🇬 +359</Text>
                             </View>
-                            <Field defaultValue="888 123 456" style={{ flex: 1 }} />
+                            <Field style={{ flex: 1 }} />
                         </View>
 
                         {/* Address */}
@@ -252,11 +252,11 @@ export default function PersonalInfoModal({ visible, onClose }) {
                             icon={<Ionicons name="location-outline" size={16} color="#9ca3af" />}
                             label="Address"
                         />
-                        <Field defaultValue="ul. Vitosha 15" />
+                        <Field  />
                         <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-                            <Field defaultValue="Sofia" />
-                            <Field defaultValue="Sofia" />
-                            <Field defaultValue="1000" />
+                            <Field  />
+                            <Field  />
+                            <Field  />
                         </View>
                     </ScrollView>
 

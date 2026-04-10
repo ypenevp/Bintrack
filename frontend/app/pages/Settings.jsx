@@ -30,201 +30,6 @@ const languageOptions = [
     { label: 'Deutsch', value: 'de' },
 ];
 
-const LanguageDropdown = ({ selectedLanguage, onSelect, isOpen, onToggle }) => {
-    const slideAnim = useRef(new Animated.Value(-50)).current;
-    const opacityAnim = useRef(new Animated.Value(0)).current;
-
-    React.useEffect(() => {
-        if (isOpen) {
-            Animated.parallel([
-                Animated.timing(slideAnim, {
-                    toValue: 0,
-                    duration: 250,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(opacityAnim, {
-                    toValue: 1,
-                    duration: 250,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        } else {
-            Animated.parallel([
-                Animated.timing(slideAnim, {
-                    toValue: -50,
-                    duration: 250,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(opacityAnim, {
-                    toValue: 0,
-                    duration: 250,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        }
-    }, [isOpen]);
-
-    return (
-        <>
-            <TouchableOpacity
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 12,
-                    paddingVertical: 8,
-                    backgroundColor: '#f3f4f6',
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: '#e5e7eb',
-                }}
-                onPress={onToggle}
-            >
-                <Text style={{
-                    fontSize: 14,
-                    fontWeight: '500',
-                    color: '#111827',
-                    marginRight: 8,
-                }}>
-                    {selectedLanguage}
-                </Text>
-                <Ionicons
-                    name={isOpen ? "chevron-up" : "chevron-down"}
-                    size={16}
-                    color="#6b7280"
-                />
-            </TouchableOpacity>
-
-            <Modal
-                visible={isOpen}
-                transparent
-                animationType="none"
-                onRequestClose={onToggle}
-            >
-                <TouchableOpacity
-                    style={{
-                        flex: 1,
-                    }}
-                    onPress={onToggle}
-                    activeOpacity={1}
-                >
-                    <Animated.View
-                        style={{
-                            position: 'absolute',
-                            top: '75%',
-                            right: 16,
-                            backgroundColor: '#fff',
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: '#e5e7eb',
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 4 },
-                            shadowOpacity: 0.15,
-                            shadowRadius: 12,
-                            elevation: 10,
-                            minWidth: 140,
-                            overflow: 'hidden',
-                            transform: [{ translateY: slideAnim }],
-                            opacity: opacityAnim,
-                        }}>
-                        {languageOptions.map((lang, index) => (
-                            <TouchableOpacity
-                                key={lang.value}
-                                style={{
-                                    paddingHorizontal: 14,
-                                    paddingVertical: 12,
-                                    borderBottomWidth: index < languageOptions.length - 1 ? 1 : 0,
-                                    borderBottomColor: '#f0f0f0',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    backgroundColor: selectedLanguage === lang.label ? '#f0f4ff' : '#fff',
-                                }}
-                                onPress={() => {
-                                    onSelect(lang.label, lang.value);
-                                    onToggle();
-                                }}
-                            >
-                                <Text style={{
-                                    fontSize: 13,
-                                    color: selectedLanguage === lang.label ? '#3b82f6' : '#111827',
-                                    fontWeight: selectedLanguage === lang.label ? '600' : '400',
-                                }}>
-                                    {lang.label}
-                                </Text>
-                                {selectedLanguage === lang.label && (
-                                    <Ionicons name="checkmark" size={14} color="#3b82f6" />
-                                )}
-                            </TouchableOpacity>
-                        ))}
-                    </Animated.View>
-                </TouchableOpacity>
-            </Modal>
-        </>
-    );
-};
-
-const CustomToggle = ({ value, onValueChange }) => {
-    const [animatedValue] = useState(new Animated.Value(value ? 1 : 0));
-
-    const handleToggle = () => {
-        Animated.timing(animatedValue, {
-            toValue: value ? 0 : 1,
-            duration: 300,
-            useNativeDriver: false,
-        }).start();
-        onValueChange(!value);
-    };
-
-    const translateX = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 25],
-    });
-
-    const backgroundColor = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['#e5e7eb', '#3b82f6'],
-    });
-
-    return (
-        <TouchableOpacity
-            style={{
-                width: 60,
-                height: 35,
-                borderRadius: 20,
-                padding: 4,
-                justifyContent: 'center',
-            }}
-            onPress={handleToggle}
-            activeOpacity={0.8}
-        >
-            <Animated.View
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 20,
-                    backgroundColor: backgroundColor,
-                    justifyContent: 'center',
-                }}
-            >
-                <Animated.View
-                    style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: 16,
-                        backgroundColor: '#fff',
-                        transform: [{ translateX }],
-                        shadowColor: '#000',
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.15,
-                        shadowRadius: 3,
-                        elevation: 3,
-                    }}
-                />
-            </Animated.View>
-        </TouchableOpacity>
-    );
-};
-
 const SettingRow = ({ icon, label, value, trailing, onPress, destructive, isCheckbox, isChecked, onCheckChange }) => (
     <TouchableOpacity
         style={{
@@ -242,7 +47,7 @@ const SettingRow = ({ icon, label, value, trailing, onPress, destructive, isChec
             width: 36,
             height: 36,
             borderRadius: 12,
-            backgroundColor: destructive ? 'rgba(239,68,68,0.1)' : '#f3f4f6',
+            backgroundColor: destructive ? 'rgba(239,68,68,0.1)' : 'rgba(107,114,128,0.1)',
             alignItems: 'center',
             justifyContent: 'center',
         }}>
@@ -308,10 +113,6 @@ const SectionTitle = ({ children }) => (
 
 export default function Settings({ navigation }) {
     const [profileImage, setProfileImage] = useState(null);
-    const [darkMode, setDarkMode] = useState(false);
-    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-    const [selectedLanguage, setSelectedLanguage] = useState('English');
-    const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
     const [showPersonalInfo, setShowPersonalInfo] = useState(false);
 
     const { user: authUser, logout } = useAuth();
@@ -339,11 +140,6 @@ export default function Settings({ navigation }) {
         }
     };
 
-    const handleLanguageChange = (label, value) => {
-        setSelectedLanguage(label);
-        console.log('Selected language:', label, value);
-    };
-
     const handleSignOut = async () => {
         await logout();
         navigation.navigate('Home');
@@ -352,10 +148,9 @@ export default function Settings({ navigation }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>
-            {/* <TopNav navigation={navigation} /> */}
 
             <ScrollView
-                scrollEnabled={!languageDropdownOpen}
+                scrollEnabled={true}
                 contentContainerStyle={{
                     paddingHorizontal: 16,
                     paddingTop: 48,
@@ -441,7 +236,6 @@ export default function Settings({ navigation }) {
 
                 <SectionTitle>ACCOUNT</SectionTitle>
                 <View style={{
-                    backgroundColor: '#fff',
                     borderRadius: 16,
                     marginBottom: 16,
                     overflow: 'hidden',
@@ -463,100 +257,8 @@ export default function Settings({ navigation }) {
                         marginLeft: 56,
                     }} />
 
-                    <SettingRow
-                        icon={<MaterialIcons name="lock" size={18} color="#6b7280" />}
-                        label="Change Password"
-                        onPress={() => {
-                            console.log('Change Password pressed');
-                        }}
-                    />
-                    <View style={{
-                        height: 1,
-                        backgroundColor: '#f3f4f6',
-                        marginLeft: 56,
-                    }} />
-
-                    <SettingRow
-                        icon={<Ionicons name="notifications-outline" size={18} color="#6b7280" />}
-                        label="Notifications"
-                        isCheckbox={true}
-                        isChecked={notificationsEnabled}
-                        onCheckChange={setNotificationsEnabled}
-                    />
-                </View>
-
-                <SectionTitle>PREFERENCES</SectionTitle>
-                <View style={{
-                    backgroundColor: '#fff',
-                    borderRadius: 16,
-                    marginBottom: 16,
-                    overflow: 'visible',
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.04,
-                    shadowRadius: 3,
-                    elevation: 1,
-                }}>
-                    <SettingRow
-                        icon={<Ionicons name="moon-outline" size={18} color="#6b7280" />}
-                        label="Dark Mode"
-                        trailing={
-                            <CustomToggle
-                                value={darkMode}
-                                onValueChange={setDarkMode}
-                            />
-                        }
-                        onPress={() => setDarkMode((p) => !p)}
-                    />
-                    <View style={{
-                        height: 1,
-                        backgroundColor: '#f3f4f6',
-                        marginLeft: 56,
-                    }} />
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: 16,
-                            paddingVertical: 14,
-                            gap: 14,
-                            position: 'relative',
-                            zIndex: 1000,
-                        }}
-                    >
-                        <View style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: 12,
-                            backgroundColor: '#f3f4f6',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <Ionicons name="globe-outline" size={18} color="#6b7280" />
-                        </View>
-
-                        <Text style={{
-                            flex: 1,
-                            fontSize: 16,
-                            fontWeight: '500',
-                            color: '#111827',
-                        }}>
-                            Language
-                        </Text>
-
-                        <LanguageDropdown
-                            selectedLanguage={selectedLanguage}
-                            onSelect={handleLanguageChange}
-                            isOpen={languageDropdownOpen}
-                            onToggle={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-                        />
-                    </View>
-                </View>
-
                 {isLoggedIn && (
                     <View style={{
-                        backgroundColor: '#fff',
                         borderRadius: 16,
                         marginTop: 12,
                         marginBottom: 16,
@@ -576,7 +278,7 @@ export default function Settings({ navigation }) {
                     </View>
                 )}
 
-                <View style={{ height: 50 }} />
+                </View>
             </ScrollView>
 
             <PersonalInfoModal
@@ -584,7 +286,6 @@ export default function Settings({ navigation }) {
                 onClose={() => setShowPersonalInfo(false)}
             />
 
-            {/* <BottomNav navigation={navigation} /> */}
         </View>
     );
 }

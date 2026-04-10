@@ -7,10 +7,11 @@ export function UIProvider({ children }) {
 
     const openLogin  = () => setModal('login');
     const openSignup = () => setModal('signup');
+    const openVerify = () => setModal('verify');
     const closeModal = () => setModal(null);
 
     return (
-        <UIContext.Provider value={{ modal, openLogin, openSignup, closeModal }}>
+        <UIContext.Provider value={{ modal, openLogin, openSignup, openVerify, closeModal }}>
             {children}
         </UIContext.Provider>
     );

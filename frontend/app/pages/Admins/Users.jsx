@@ -196,7 +196,6 @@ export default function FormUpdates1({ navigation }) {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#f8fafc" }}>
-            <TopNav navigation={navigation} />
             <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
                 <Text style={{ fontSize: 26, fontWeight: "700", color: "#0f172a", marginBottom: 4 }}>
                     Users
@@ -208,7 +207,6 @@ export default function FormUpdates1({ navigation }) {
                     <UserCard key={user.id} user={user} onRoleChange={handleRoleChange} />
                 ))}
             </ScrollView>
-            <BottomNav navigation={navigation} />
         </View>
     );
 }
