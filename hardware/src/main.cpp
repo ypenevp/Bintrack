@@ -195,12 +195,12 @@ void reconnectMqtt()
 }
 
 void publishTelemetry() {
-    String registeredLocation = "Drujba";
-    String coordinateStr = "42.23";
+    String registeredLocation = "Ovcha Kupel";
+    String coordinateStr = "42.6845, 23.2556";
 
     String payload = status + "," + registeredLocation + "," + coordinateStr;
 
-    String topic = String("esp32/sensor");
+    String topic = String("esp32/sensor/6");
 
     if(mqttClient.publish(topic.c_str(), payload.c_str())) 
     {
