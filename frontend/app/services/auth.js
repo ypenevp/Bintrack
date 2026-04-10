@@ -87,7 +87,7 @@ export const handleLogin = async ({ email, password }) => {
     try {
         console.log("API URL:", API_URL);
 
-        const response = await fetch(`${API_URL}:7070/api/auth/login`, {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
