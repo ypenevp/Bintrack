@@ -82,9 +82,45 @@ public class UpdatesController {
     }
 
     @PatchMapping("/updateupdate/{id}")
-    public Updates updateUpdates(@PathVariable Long id, @RequestBody Updates updates) {
+    public Updates updateUpdates(
+            @PathVariable Long id,
+            @ModelAttribute UpdatesCreateRequest data,
+            HttpServletRequest request
+    ) throws IOException {
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Missing or invalid Authorization header");
+        }
+
+        String token = authHeader.substring(7);
+        String email = jwtService.extractEmail(token);
+
+        userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Updates updates = new Updates();
         updates.setId(id);
-        return this.updatesService.updateUpdates(updates);
+
+        if (data.getTitle() != null) {
+            updates.setTitle(data.getTitle());
+        }
+
+        if (data.getArticle() != null) {
+            updates.setArticle(data.getArticle());
+        }
+
+        if (data.getImage() != null && !data.getImage().isEmpty()) {
+            Map uploadImage = cloudinaryService.getCloudinary()
+                    .uploader()
+                    .upload(data.getImage().getBytes(), ObjectUtils.emptyMap());
+
+            String pictureUrl = (String) uploadImage.get("secure_url");
+            updates.setPicture(pictureUrl);
+        }
+
+        return updatesService.updateUpdates(updates);
     }
 
     @DeleteMapping("/deleteupdate/{id}")

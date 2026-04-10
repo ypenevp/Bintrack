@@ -104,7 +104,7 @@ const TopNav = ({ navigation, currentRoute }) => {
                         />
                         <View style={{ alignItems: 'center' }}>
                             <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#15803d' }}>
-                                JunkBuddy
+                                BinTrack
                             </Text>
                             {/* Underline springs in when on Home */}
                             <Animated.View style={{

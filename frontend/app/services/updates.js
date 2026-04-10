@@ -16,7 +16,7 @@ export async function AddUpdate(title, article, image) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('article', article);
-        
+
         formData.append('image', {
             uri: image,
             type: 'image/jpeg',
@@ -51,7 +51,7 @@ export async function AddUpdate(title, article, image) {
     }
 }
 
-export async function EditUpdate(id) { // Patch updates
+export async function EditUpdate(id, title, article, image) { // Patch updates
     try {
 
         const token = await AsyncStorage.getItem("access");
@@ -59,12 +59,25 @@ export async function EditUpdate(id) { // Patch updates
             throw new Error("Authentication failed!");
         }
 
+        const formData = new FormData();
+
+        if (title) formData.append("title", title);
+        if (article) formData.append("article", article);
+
+        if (image) {
+            formData.append('image', {
+                uri: image,
+                type: 'image/jpeg',
+                name: image.split('/').pop() || 'update-image.jpg'
+            });
+        }
+
         const response = await fetch(`${API_URL}/api/updates/updateupdate/${id}`, {
             method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
+            },
+            body: formData
         });
 
         if (response.ok) {
