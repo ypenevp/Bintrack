@@ -361,3 +361,130 @@ void loop()
   
   delay(500);
 }
+
+/*
+// ==============================================================================
+// DEEP SLEEP VERSION (Sends MQTT 3 times a day - every 8 hours)
+// ==============================================================================
+// 
+//
+// #include <Arduino.h>
+// #include <Adafruit_NeoPixel.h>
+// #include <TinyGPSPlus.h>
+// #include <WiFi.h>
+// #include <PubSubClient.h>
+// #include "secrets.h"
+// 
+// #define TRIG 12
+// #define ECHO 11
+// #define RX 17
+// #define TX 16
+// #define RGB_PIN 14
+// #define RGB_COUNT 1
+// 
+// #define TIME_TO_SLEEP 28800ULL   
+// #define uS_TO_S_FACTOR 1000000ULL 
+// 
+// Adafruit_NeoPixel rgb(RGB_COUNT, RGB_PIN, NEO_GRB + NEO_KHZ800);
+// HardwareSerial gpsSerial(2);
+// TinyGPSPlus gps;
+// 
+// const char *ssid = NETWORK_NAME;
+// const char *password = NETWORK_PASSWORD;
+// 
+// WiFiClient espClient;
+// PubSubClient mqttClient(espClient);
+// 
+// float binLength = 20;
+// 
+// void setup() {
+//   Serial.begin(115200);
+// 
+//   rgb.begin();
+//   rgb.show();
+//   pinMode(TRIG, OUTPUT);
+//   pinMode(ECHO, INPUT);
+//   gpsSerial.begin(9600, SERIAL_8N1, RX, TX);
+//   
+//   digitalWrite(TRIG, LOW);
+//   delay(100); 
+// 
+//   float totalDistance = 0;
+//   int validMeasurements = 0;
+//   for (int i = 0; i < 3; i++) {
+//     digitalWrite(TRIG, LOW); delayMicroseconds(2);
+//     digitalWrite(TRIG, HIGH); delayMicroseconds(10);
+//     digitalWrite(TRIG, LOW);
+//     
+//     unsigned long duration = pulseIn(ECHO, HIGH, 38000);
+//     if (duration > 0 && duration < 38000) {
+//       totalDistance += (duration / 58.0);
+//       validMeasurements++;
+//     }
+//     delay(50);
+//   }
+// 
+//   float distance = (validMeasurements == 0) ? 0 : (totalDistance / validMeasurements);
+//   
+//   
+//   if (distance > 20) rgb.setPixelColor(0, rgb.Color(255, 0, 0));
+//   else if (distance >= 10 && distance <= 20) rgb.setPixelColor(0, rgb.Color(255, 255, 0));
+//   else if (distance >= 0 && distance <= 10) rgb.setPixelColor(0, rgb.Color(0, 255, 0));
+//   rgb.show();
+// 
+//   
+//   long fillPercentage = ((binLength - distance) / binLength) * 100;
+//   if (fillPercentage < 0) fillPercentage = 0;
+//   if (fillPercentage > 100) fillPercentage = 100;
+// 
+//   String status = "EMPTY";
+//   if (fillPercentage > 0 && fillPercentage < 30) status = "LOW";
+//   else if (fillPercentage >= 30 && fillPercentage < 70) status = "MEDIUM";
+//   else if (fillPercentage >= 70) status = "FULL";
+// 
+//   WiFi.begin(ssid, password);
+//   int wifiAttempts = 0;
+//   while (WiFi.status() != WL_CONNECTED && wifiAttempts < 20) { // 10 second timeout
+//     delay(500);
+//     wifiAttempts++;
+//   }
+// 
+//   unsigned long gpsStart = millis();
+//   while (millis() - gpsStart < 1000) {
+//     while (gpsSerial.available()) gps.encode(gpsSerial.read());
+//   }
+// 
+//   if (WiFi.status() == WL_CONNECTED) {
+//     mqttClient.setServer(MQTT_BROKER_IP, MQTT_PORT);
+//     
+//     if (mqttClient.connect(MQTT_CLIENT_ID)) {
+//       String registeredLocation = "Ovcha Kupel";
+//       String coordinateStr = "42.6845, 23.2556";
+// 
+//       String payload = status + "," + registeredLocation + "," + coordinateStr;
+//       String topic = String("esp32/sensor/6");
+// 
+//       mqttClient.publish(topic.c_str(), payload.c_str());
+//       Serial.println("Published to " + topic + ": " + payload);
+//       
+//       delay(500); // Give ESP32 time to flush the MQTT packet over network
+//     }
+//   }
+// 
+//
+//   Serial.println("Tasks done. Going to sleep for 8 hours...");
+//   
+//   rgb.clear(); 
+//   rgb.show();
+//   
+//   WiFi.disconnect(true);
+//   WiFi.mode(WIFI_OFF);
+//   
+//   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+//   esp_deep_sleep_start();
+// }
+// 
+// void loop() {
+// }
+// ==============================================================================
+*/
