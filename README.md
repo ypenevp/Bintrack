@@ -48,10 +48,8 @@
 
 ### Extra Features
 - Full user authentication with email verification.
-- JWT session management for secure API access.
-- Role access with three roles: USER, WORKER, ADMIN.
 - Admin panel for managing user roles and system configuration.
-- News/updates with image.
+- News/updates.
   
 ---
 ## Schematic
@@ -145,10 +143,11 @@ Base URL: `http://localhost:7070/api`
 ---
 
 ## Future Improvements
+- Solar panel power supply.
+- Machine learning model to predict fill rates and schedule collections.
 - Push notifications to workers when a bin exceeds a fill threshold.
 - Historical fill-level analytics and reporting dashboard.
 - Integration with third-party mapping APIs for advanced route optimization.
-- Machine learning model to predict fill rates and schedule collections.
 - Web admin dashboard in addition to the mobile app.
 
 ---
