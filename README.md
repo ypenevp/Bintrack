@@ -18,6 +18,7 @@
 ## Introduction
 
 **The problem:**
+
 - Waste collectors don’t know when bins are full.
 - Bins can overflow or be emptied too early.
 - Companies lack real-time location and status of bins.
@@ -41,12 +42,8 @@
 
 ### Core Features
 - Real-time bin fill-level monitoring via VL53L0X time-of-flight sensor.
-- GPS tracking with live bin location updates via NEO-6M GPS module.
-- GSM connectivity for remote data transmission using SIM800L module.
-- OLED display on device showing current bin status and sensor readings.
-- Movement and tilt detection via MPU6050 accelerometer/gyroscope.
-- REST API backend for data ingestion, retrieval, and management.
-- React Native mobile app with live map view and navigation to bins.
+- REST API backend for data management.
+- React Native mobile app with stat monitoring and navigation to bins.
 - Automated route optimization to prioritize full or near-full bins.
 
 ### Extra Features
@@ -55,11 +52,11 @@
 - Role access with three roles: USER, WORKER, ADMIN.
 - Admin panel for managing user roles and system configuration.
 - News/updates with image.
-- User profiles with customizable themes and role-specific fields.
-- Phone number field restricted to ADMIN and WORKER roles only.
-
+  
 ---
 ## Schematic
+
+![bintrack](https://github.com/user-attachments/assets/04aab752-3c73-4d03-9e0c-93de1badff8f)
 
 ---
 
@@ -127,8 +124,7 @@ Base URL: `http://localhost:7070/api`
 | Layer | Technology |
 |-------|-----------|
 | **Firmware** | C++ (Arduino framework), ESP32 S3 |
-| **Sensors** | NEO-6M GPS, SIM800L GSM, MPU6050, VL53L0X |
-| **Display** | SSD1306 OLED display |
+| **Sensors** |  HC-SR04 |
 | **Backend** | Spring Boot |
 | **Database** | PostgreSQL |
 | **Authentication** | JWT |
