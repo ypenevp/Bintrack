@@ -90,7 +90,7 @@ Base URL: `http://localhost:7070/api`
 | `POST` | `/auth/verify` | Verify user with a code sent to their email. |
 | `POST` | `/auth/login` | Login a verified user with email and password. |
 | `GET`  | `/auth/me` | Get the currently authenticated user. |
-| `GET`  | `/auth/getallusers` | Get all authenticated users from DB. |
+| `GET`  | `/auth/getall` | Get all authenticated users from DB. |
 
 ---
 
